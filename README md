@@ -1,0 +1,412 @@
+# ♾️ DIGIY HUB — 0% Commission • Paiement Direct
+
+**L'Afrique enracinée, connectée au monde**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Status: Live](https://img.shields.io/badge/Status-Live-success)](https://beauville.github.io/digiy-hub/)
+[![Made in Senegal](https://img.shields.io/badge/Made%20in-Senegal%20🇸🇳-green)](https://digiylyfe.com)
+
+## 🎯 À Propos
+
+**DIGIY HUB** est le portail unique d'accès à l'écosystème DIGIYLYFE — une plateforme complète de modules business qui révolutionne l'économie digitale africaine avec un modèle **0% commission**.
+
+Contrairement aux plateformes traditionnelles (Uber, Booking, Airbnb) qui prélèvent 15-30% de commission, DIGIYLYFE fonctionne sur un modèle d'**abonnement**, permettant aux professionnels de garder **100% de leurs revenus**.
+
+### 🚀 Démo Live
+
+**👉 [https://beauville.github.io/digiy-hub/](https://beauville.github.io/digiy-hub/)**
+
+---
+
+## 📦 Modules Disponibles (27)
+
+### 👥 Modules Publics (13)
+
+| Module | Status | Description |
+|--------|--------|-------------|
+| 💥 **DIGIY BONNE AFFAIRE** | `OFFICIEL` | Meilleures promos et deals locaux |
+| 🗺️ **DIGIY NDIMBAL MAP** | `GRATUIT` | Annuaire géolocalisé du Sénégal |
+| 🚕 **DIGIY DRIVER CLIENT** | `LIVE` | Commander une course VTC |
+| 🏠 **DIGIY LOC** | `LIVE` | Location sans OTA (Booking/Airbnb) |
+| 🍽️ **DIGIY RESTO** | `LIVE` | Vitrine restaurant avec réservation |
+| 🏗️ **DIGIY BUILD** | `LIVE` | Artisans & BTP - Devis direct |
+| 🧭 **DIGIY EXPLORE** | `LIVE` | Tourisme & découverte authentique |
+| 🛍️ **DIGIY MARKET** | `PRIORITÉ` | Marketplace locale sans commission |
+| 💼 **DIGIY JOBS** | `PRIORITÉ` | Emploi & talents |
+| 💳 **DIGIY PAY** | `PRIORITÉ` | Wallet Wave/OM/CB |
+| 📅 **DIGIY RESA** | `LIVE` | Gestion réservations |
+| 🪑 **DIGIY RESA TABLE** | `LIVE` | Réservation tables restaurant |
+| 📓 **DIGIY NOTABLE** | `PRIORITÉ` | Notes & docs terrain |
+
+### 👨🏾‍💼 Modules PRO (14)
+
+| Module | Status | Description |
+|--------|--------|-------------|
+| 📝 **INSCRIPTION PRO** | `NOUVEAU` | Inscription intelligente multi-modules |
+| 🧰 **ESPACE PRO** | `LIVE` | Portail PRO (slug + PIN) |
+| 🚗 **DIGIY DRIVER PRO** | `LIVE` | Cockpit chauffeur VTC |
+| 🏡 **DIGIY LOC PRO** | `LIVE` | Gestion propriétaire |
+| 🧾 **DIGIY CAISSE PRO** | `NOUVEAU` | POS + sync terrain |
+| 🧱 **DIGIY BUILD PRO** | `PRIORITÉ` | Gestion chantiers BTP |
+| 📦 **DIGIY MARKET PRO** | `PRIORITÉ` | Boutique en ligne |
+| 🧑🏾‍💼 **DIGIY JOBS PRO** | `PRIORITÉ` | Gestion offres employeur |
+| 👨🏾‍🍳 **DIGIY RESTO PRO** | `PRIORITÉ` | Gestion resto complète |
+| 🧭 **DIGIY EXPLORE PRO** | `PRIORITÉ` | Gestion spots touristiques |
+| 💸 **DIGIY PAY PRO** | `PRIORITÉ` | Encaissement PRO |
+| 📆 **DIGIY RESA PRO** | `PRIORITÉ` | Planning réservations PRO |
+| 📦 **FRET CLIENT PRO** | `LIVE` | Portail FRET client (PIN direct) |
+| 🚚 **FRET CHAUFFEUR PRO** | `LIVE` | Portail FRET chauffeur (PIN direct) |
+
+---
+
+## ✨ Fonctionnalités Clés
+
+### 🔍 Recherche Intelligente
+Recherche en temps réel sur tous les modules :
+- Tape **"driver"** → trouve DRIVER CLIENT + DRIVER PRO
+- Tape **"caisse"** → trouve CAISSE PRO
+- Tape **"gratuit"** → trouve NDIMBAL MAP
+
+### 🏷️ Filtrage Dynamique
+- **Tous** : 27 modules
+- **Public** : 13 modules clients
+- **PRO** : 14 modules professionnels
+
+### 📱 Phone Management
+- Mémorise ton numéro une fois
+- L'envoie automatiquement aux modules compatibles
+- Modifiable/effaçable à tout moment
+
+### 🎯 Boutons Flottants
+- **🏷️ Tarifs DIGIY** → Voir la grille tarifaire
+- **🧰 ESPACE PRO** → Accès portail professionnel
+- **♾️ NDIMBAL** → Assistant rapide avec 3 actions :
+  - 📋 Publier une mission
+  - 💼 Trouver du travail
+  - 📷 Scanner QR DIGIYLYFE
+
+### 📊 Stats en Temps Réel
+Affichage dynamique du nombre de modules par catégorie
+
+---
+
+## 🏗️ Architecture Technique
+
+### Data-Driven Design
+
+Le HUB utilise une architecture **100% data-driven** :
+
+```javascript
+// Un seul array pour tous les modules
+const MODULES = [
+  {
+    key: "bonneAffaire",
+    name: "DIGIY BONNE AFFAIRE",
+    icon: "💥",
+    tag: "BONS PLANS • PROMOS",
+    desc: "Les meilleures opportunités locales...",
+    kind: "public",
+    status: "officiel",
+    statusLabel: "OFFICIEL",
+    phoneParam: false
+  },
+  // ... 26 autres modules
+];
+```
+
+**Avantages :**
+- ✅ Ajouter un module = 1 objet JS
+- ✅ Modifier un badge = 1 ligne
+- ✅ Scalable pour 100+ modules
+- ✅ Maintenance ultra-simple
+
+### Stack Technique
+
+- **Frontend** : HTML5, CSS3 (Variables CSS), Vanilla JavaScript
+- **Architecture** : SPA (Single Page Application) avec iframe overlay
+- **Design** : Mobile-first, responsive
+- **Performance** : Aucune dépendance externe
+- **Hébergement** : GitHub Pages
+
+### Structure des Fichiers
+
+```
+digiy-hub/
+├── index.html          # Point d'entrée
+├── hub.css             # Styles (badges custom, responsive)
+├── hub.js              # Logique (data-driven, event listeners)
+├── manifest.json       # PWA manifest
+├── icon-192.png        # Icône app
+└── README.md           # Documentation
+```
+
+---
+
+## 🚀 Installation & Déploiement
+
+### Développement Local
+
+```bash
+# 1. Clone le repo
+git clone https://github.com/beauville/digiy-hub.git
+cd digiy-hub
+
+# 2. Ouvre dans le navigateur
+# Ouvre index.html directement
+# OU utilise un serveur local :
+python -m http.server 8000
+# Puis visite http://localhost:8000
+```
+
+### Déploiement GitHub Pages
+
+```bash
+# 1. Commit tes changements
+git add .
+git commit -m "Update: description de tes modifications"
+
+# 2. Push vers GitHub
+git push origin main
+
+# 3. Active GitHub Pages
+# Settings → Pages → Source: main branch → Save
+```
+
+Le site sera disponible à : `https://[ton-username].github.io/digiy-hub/`
+
+---
+
+## 🛠️ Ajouter un Module
+
+Ajouter un nouveau module est **ultra-simple** :
+
+### Étape 1 : Ajoute le lien dans `LINKS`
+
+```javascript
+const LINKS = {
+  // ... liens existants
+  tonModule: "https://beauville.github.io/ton-module/"
+};
+```
+
+### Étape 2 : Ajoute le module dans `MODULES`
+
+```javascript
+const MODULES = [
+  // ... modules existants
+  {
+    key: "tonModule",              // Correspond à LINKS
+    name: "TON MODULE",            // Nom affiché
+    icon: "🎯",                    // Emoji
+    tag: "DESCRIPTIF",             // Tag sous le nom
+    desc: "Description complète du module terrain.",
+    kind: "public",                // "public" ou "pro"
+    status: "live",                // officiel, nouveau, live, priorite, gratuit
+    statusLabel: "LIVE",           // Label du badge
+    phoneParam: true,              // true si accepte ?phone=
+    directUrl: ""                  // Optionnel : override LINKS[key]
+  }
+];
+```
+
+### Étape 3 : Commit & Push
+
+```bash
+git add hub.js
+git commit -m "Add: TON MODULE"
+git push
+```
+
+**C'est tout !** Le module apparaîtra automatiquement avec :
+- ✅ Card générée
+- ✅ Badges ajoutés
+- ✅ Filtrage fonctionnel
+- ✅ Recherche fonctionnelle
+- ✅ Stats mises à jour
+
+---
+
+## 🎨 Personnalisation
+
+### Modifier les Couleurs
+
+Dans `hub.css`, ligne 1-18 :
+
+```css
+:root {
+  --nouveau: #3b82f6;    /* Bleu - Badge NOUVEAU */
+  --priorite: #a855f7;   /* Violet - Badge PRIORITÉ */
+  --officiel: #f6c453;   /* Or - Badge OFFICIEL */
+  --gratuit: #22c55e;    /* Vert - Badge GRATUIT */
+  --live: #22c55e;       /* Vert - Badge LIVE */
+  
+  /* Couleurs principales */
+  --gold: #f6c453;       /* Accent or */
+  --green: #16a34a;      /* Accent vert */
+}
+```
+
+### Modifier le Hero
+
+Dans `index.html`, ligne 30-75 :
+
+```html
+<h1>Tout ton business dans ta main.<br>
+    <span class="gold">0% commission</span>.<span class="dot">●</span>
+</h1>
+
+<p>
+  <strong>Chauffeur, restaurant, boutique, logement, artisan.</strong><br>
+  Un seul abonnement. 27 modules. Paiement direct au pro.
+</p>
+```
+
+### Modifier le Compteur Pionniers
+
+Dans `hub.js`, ligne 750 :
+
+```javascript
+const pioneersLeft = $("#pioneersLeft");
+if (pioneersLeft) {
+  pioneersLeft.textContent = "87"; // Change ce chiffre
+}
+```
+
+---
+
+## 📖 Documentation Modules
+
+### Statuts Disponibles
+
+| Status | Badge | Couleur | Usage |
+|--------|-------|---------|-------|
+| `officiel` | OFFICIEL | Or | Module flagship officiel |
+| `nouveau` | NOUVEAU | Bleu | Nouveau module lancé |
+| `live` | LIVE | Vert | Module actif et stable |
+| `priorite` | PRIORITÉ | Violet | En développement prioritaire |
+| `gratuit` | GRATUIT | Vert | Gratuit pour tous |
+| `beta` | BETA | Orange | En test bêta |
+| `soon` | SOON | Gris | Bientôt disponible |
+
+### Paramètre Phone
+
+Si `phoneParam: true`, le HUB ajoutera automatiquement `?phone=+221XXXXXXX` à l'URL du module quand un numéro est mémorisé.
+
+**Exemple :**
+```javascript
+{
+  key: "driverClient",
+  phoneParam: true
+}
+// URL générée : https://beauville.github.io/digiy-driver-client/?phone=+221771234567
+```
+
+---
+
+## 💡 Business Model
+
+### 0% Commission
+
+**DIGIYLYFE** révolutionne l'économie digitale africaine :
+
+| Plateforme | Commission | Modèle DIGIY |
+|------------|-----------|--------------|
+| Uber | 25% | **0%** |
+| Booking | 15-20% | **0%** |
+| Airbnb | 15-18% | **0%** |
+| Jumia | 20-30% | **0%** |
+
+### Modèle d'Abonnement
+
+- **Abonnement mensuel fixe** selon les modules activés
+- **Paiement direct** entre client et professionnel
+- **100% des revenus** pour le professionnel
+- **Places pionniers** à prix bloqué à vie
+
+### Tarifs
+
+Consulte la grille complète : **[https://beauville.github.io/digiy/](https://beauville.github.io/digiy/)**
+
+---
+
+## 🤝 Contribuer
+
+Les contributions sont les bienvenues ! Voici comment :
+
+### Rapporter un Bug
+
+1. Ouvre une [Issue](https://github.com/beauville/digiy-hub/issues)
+2. Décris le problème
+3. Ajoute des captures d'écran si possible
+4. Indique ton navigateur et OS
+
+### Proposer une Fonctionnalité
+
+1. Ouvre une [Issue](https://github.com/beauville/digiy-hub/issues)
+2. Décris la fonctionnalité
+3. Explique le cas d'usage
+4. Propose une implémentation si possible
+
+### Pull Request
+
+1. Fork le projet
+2. Crée ta branche (`git checkout -b feature/AmazingFeature`)
+3. Commit tes changements (`git commit -m 'Add: AmazingFeature'`)
+4. Push vers la branche (`git push origin feature/AmazingFeature`)
+5. Ouvre une Pull Request
+
+---
+
+## 📱 Contact & Support
+
+- **Site Web** : [https://digiylyfe.com](https://digiylyfe.com)
+- **WhatsApp** : [+221 77 134 28 89](https://wa.me/221771342889)
+- **Tarifs** : [https://beauville.github.io/digiy/](https://beauville.github.io/digiy/)
+- **Email** : contact@digiylyfe.com
+
+---
+
+## 📄 License
+
+MIT License - voir le fichier [LICENSE](LICENSE) pour plus de détails.
+
+---
+
+## 🙏 Remerciements
+
+- **Communauté DIGIYLYFE** pour le feedback terrain
+- **Pionniers** qui nous font confiance dès le début
+- **Sénégal** 🇸🇳 notre terre d'innovation
+
+---
+
+## 🚀 Roadmap
+
+### Q1 2026
+- [x] DIGIY HUB - Portail unifié
+- [x] DIGIY DRIVER PRO - Cockpit chauffeur
+- [x] DIGIY CAISSE PRO - POS terrain
+- [ ] DIGIY PAY - Wallet Wave/OM/CB
+- [ ] DIGIY MARKET - Marketplace complète
+
+### Q2 2026
+- [ ] DIGIY JOBS PRO - Gestion employeur
+- [ ] DIGIY RESTO PRO - Gestion restaurant
+- [ ] DIGIY BUILD PRO - Pipeline BTP
+- [ ] Extension vers autres pays d'Afrique
+
+---
+
+<div align="center">
+
+**♾️ DIGIYLYFE**
+
+*L'Afrique enracinée, connectée au monde*
+
+**0% commission • Paiement direct • Terrain ready**
+
+Made with ❤️ in Senegal 🇸🇳
+
+[Site Web](https://digiylyfe.com) • [Démo](https://beauville.github.io/digiy-hub/) • [Tarifs](https://beauville.github.io/digiy/)
+
+</div>
