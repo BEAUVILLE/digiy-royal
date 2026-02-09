@@ -1,8 +1,10 @@
+Digiy royal
+
 <!doctype html>
 <html lang="fr">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"/>
   <meta name="theme-color" content="#061b14"/>
 
   <title>DIGIY ROYAL ∞ — L’Afrique enracinée, connectée au monde</title>
@@ -11,75 +13,35 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="DIGIY ROYAL">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes">
   
   <link rel="icon" href="./icon-192.png" sizes="192x192">
   <link rel="apple-touch-icon" href="./icon-192.png">
+  
   <link rel="manifest" href="./manifest.json">
 
+  <link rel="stylesheet" href="./hub.css?v=enhanced1"/>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="./hub.css?v=enhanced1"/>
-
-  <style>
-    /* On stabilise les fondations sans bloquer les clics */
-    html {
-      overflow: hidden;
-      height: 100%;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow-x: hidden;
-      overflow-y: auto; /* On laisse le scroll naturel ici */
-      background: #061b14;
-      -webkit-overflow-scrolling: touch;
-      /* On empêche uniquement le zoom et le scroll horizontal, pas le clic ! */
-      touch-action: pan-y; 
-    }
-
-    /* On s'assure que tout ce qui est cliquable passe devant */
-    button, a, .tab, .btn, .floatBtn, .chip, input {
-      cursor: pointer;
-      touch-action: manipulation !important;
-      -webkit-tap-highlight-color: transparent;
-      position: relative;
-      z-index: 50; /* Priorité maximale aux clics */
-    }
-
-    /* Force les inputs à ne pas faire zoomer Safari */
-    input {
-      font-size: 16px !important;
-    }
-
-    /* On bloque le glissement des images */
-    img, .logo {
-      pointer-events: none;
-      -webkit-user-drag: none;
-    }
-
-    /* Le container principal doit rester propre */
-    .app {
-      position: relative;
-      width: 100%;
-      min-height: 100%;
-      display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
-    }
-  </style>
-
   <script defer src="./hub.js?v=enhanced1"></script>
+
+  <script>
+    document.addEventListener('touchmove', function (e) {
+      if (window.navigator.standalone) {
+        // Empêche le rebond Safari quand on est en mode "App"
+        // e.preventDefault(); 
+      }
+    }, { passive: false });
+  </script>
 </head>
-
+  
 <body>
-  <div class="bg" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:1;"></div>
+  <div class="bg"></div>
 
-  <div class="app" style="position:relative; z-index:10;">
+  <div class="app">
     <header class="top">
-      <a class="brand" href="#" id="homeBrand">
+      <a class="brand" href="#" id="homeBrand" aria-label="Retour haut de page">
         <div class="logo">∞</div>
         <div class="brandText">
           <div class="title">DIGIY ROYAL</div>
@@ -90,10 +52,12 @@
       <div class="hero">
         <div class="heroLeft">
           <div class="eyebrow">DIGIY ROYAL</div>
+
           <h1>
             L’Afrique enracinée, connectée au monde.<br>
             <span class="gold">Tout ton business dans ta main</span><span class="dot">●</span>
           </h1>
+
           <p>
             <strong>Chauffeur, restaurant, boutique, logement, artisan.</strong><br>
             Un seul abonnement. Tous les outils. Paiement direct au pro.
@@ -105,7 +69,7 @@
           </div>
 
           <div class="miniRow">
-            <div class="chip">
+            <div class="chip" title="Le HUB peut envoyer ton numéro à certains modules si supporté">
               <span class="chipK">📱 Numéro</span>
               <span id="phoneText" class="chipV">non mémorisé</span>
             </div>
@@ -113,10 +77,10 @@
             <button id="btnClearPhone" class="btn tiny danger" type="button">Effacer</button>
           </div>
 
-          <div class="pioneerStrip">
+          <div class="pioneerStrip" aria-hidden="true">
             <div class="pioneerLeft">
               <div class="pioneerTitle">🔥 Accès pionniers limité</div>
-              <div class="pioneerText">Prix bloqué à vie pour les premiers abonnés.</div>
+              <div class="pioneerText">Prix bloqué à vie pour les premiers abonnés DIGIY.</div>
             </div>
             <div class="pioneerRight">
               <div class="pioneerN" id="pioneersLeft">87</div>
@@ -128,20 +92,30 @@
         <div class="heroRight">
           <div class="panel">
             <div class="panelTitle">🧭 Navigation F16 Enhanced</div>
+            <div class="panelHint">Filtre + recherche + modules data-driven. Business ready.</div>
+
             <div class="controls">
-              <div class="tabs">
-                <button class="tab active" data-filter="all">Tous</button>
-                <button class="tab" data-filter="public">Public</button>
-                <button class="tab" data-filter="pro">PRO</button>
+              <div class="tabs" role="tablist" aria-label="Filtres">
+                <button class="tab active" data-filter="all" type="button">Tous</button>
+                <button class="tab" data-filter="public" type="button">Public</button>
+                <button class="tab" data-filter="pro" type="button">PRO</button>
               </div>
+
               <div class="searchBox">
-                <input id="searchInput" type="search" placeholder="Chercher…"/>
+                <input id="searchInput" type="search" placeholder="Chercher… (ex: driver, resto, caisse, pay)" autocomplete="off"/>
+                <button id="btnReset" class="btn tiny" type="button">Reset</button>
               </div>
             </div>
-            <div class="stats">
+
+            <div class="stats" role="status" aria-live="polite">
               <div class="stat"><div class="statN" id="statTotal">0</div><div class="statL">Total</div></div>
               <div class="stat"><div class="statN" id="statPublic">0</div><div class="statL">Public</div></div>
               <div class="stat"><div class="statN" id="statPro">0</div><div class="statL">PRO</div></div>
+            </div>
+
+            <div class="note">
+              <b>💡 Astuce terrain :</b> si ton numéro est mémorisé, le HUB peut l'envoyer en paramètre aux modules
+              (quand le module le supporte). Sinon, navigation simple frérot.
             </div>
           </div>
         </div>
@@ -150,22 +124,97 @@
 
     <main class="main">
       <section class="section">
-        <div id="modulesGrid" class="grid"></div>
+        <div class="sectionHead">
+          <h2>Tous tes modules DIGIY</h2>
+          <div class="legend">
+            <span class="pill officiel">OFFICIEL</span>
+            <span class="pill nouveau">NOUVEAU</span>
+            <span class="pill live">LIVE</span>
+            <span class="pill priorite">PRIORITÉ</span>
+            <span class="pill gratuit">GRATUIT</span>
+          </div>
+        </div>
+
+        <div id="modulesGrid" class="grid" aria-live="polite"></div>
       </section>
+
       <footer class="footer">
         <div class="footLine">
           <span class="footBrand">DIGIYLYFE ∞</span>
           <span class="sep">·</span>
           <span>0% commission</span>
+          <span class="sep">·</span>
+          <span>paiement direct</span>
+          <span class="sep">·</span>
+          <span>L'Afrique enracinée, connectée au monde</span>
         </div>
-        <div class="footTiny">F16 Enhanced · Made in Sénégal 🇸🇳</div>
+        <div class="footTiny">F16 Enhanced · Data-driven · Business-ready · Made in Sénégal 🇸🇳</div>
       </footer>
     </main>
 
-    <button id="tarif-bubble-btn" class="floatBtn" style="bottom: 80px; right: 20px;">🏷️ Tarifs</button>
-    <button id="espace-pro-btn" class="floatBtn" style="bottom: 140px; right: 20px;">🧰 PRO</button>
-    <button id="digiy-help-btn" class="floatBtn" style="bottom: 20px; right: 20px;">♾️ NDIMBAL</button>
+    <!-- Boutons flottants -->
+    <button id="tarif-bubble-btn" class="floatBtn" type="button">🏷️ Tarifs</button>
+    <button id="espace-pro-btn" class="floatBtn" type="button">🧰 PRO</button>
+    <button id="digiy-help-btn" class="floatBtn" type="button">♾️ NDIMBAL</button>
 
+    <!-- NDIMBAL popup -->
+    <div id="digiy-ndimbal" class="ndimbal hidden" aria-hidden="true">
+      <div class="ndimbalBox" role="dialog" aria-modal="true">
+        <div class="ndimbalTitle">♾️ NDIMBAL</div>
+        <div class="ndimbalText"><b>Naka nga def frérot ?</b><br>Dis-moi ce que tu veux faire, je te pointe au bon endroit.</div>
+
+        <div class="ndimbalActions">
+          <button class="btn primary" type="button" data-action="sell">📋 Publier une mission</button>
+          <button class="btn outline" type="button" data-action="job">💼 Trouver du travail</button>
+          <button class="btn ghost" type="button" data-action="qr">📷 QR DIGIYLYFE</button>
+        </div>
+
+        <button class="btn tiny danger" type="button" id="digiyCloseBtn" style="margin-top:10px">❌ Quitter</button>
+      </div>
     </div>
+
+    <!-- QR modal -->
+    <div id="qrModal" class="qrModal hidden" aria-hidden="true">
+      <div class="qrContent" role="dialog" aria-modal="true">
+        <div class="qrHeader">
+          <div class="qrTitle">♾️ QR DIGIYLYFE</div>
+          <button id="qrClose" class="btn tiny" type="button">✖ Fermer</button>
+        </div>
+
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=https://digiylyfe.com"
+             alt="QR DIGIYLYFE" class="qrImg">
+
+        <div class="qrText">📱 Scanne pour ouvrir DIGIYLYFE</div>
+        <a href="https://digiylyfe.com" target="_blank" rel="noopener" class="qrLink">Ouvrir le site →</a>
+      </div>
+    </div>
+
+    <!-- HUB overlay (iframe) -->
+    <div id="hubOverlay" class="hubOverlay hidden" aria-hidden="true">
+      <div class="hubCard" role="dialog" aria-modal="true">
+        <div class="hubTop">
+          <div class="hubBrand">♾️ DIGIY HUB</div>
+          <div class="hubTopBtns">
+            <button class="hubBtn back" id="hubBackBtn" type="button">← Retour HUB</button>
+            <button class="hubBtn close" id="hubCloseBtn" type="button">✖ Fermer</button>
+          </div>
+        </div>
+        <iframe id="hubFrame" title="Module DIGIY" allow="geolocation; camera; microphone"></iframe>
+      </div>
+    </div>
+
+    <!-- Modal simple -->
+    <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modalCard">
+        <div class="modalTitle" id="modalTitle">Titre</div>
+        <div class="modalText" id="modalText">Texte</div>
+        <div class="modalActions">
+          <button id="modalCancel" class="btn ghost" type="button">Annuler</button>
+          <button id="modalOk" class="btn primary" type="button">OK</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </body>
 </html>
