@@ -2,24 +2,38 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"/>
   <meta name="theme-color" content="#061b14"/>
 
   <title>DIGIY ROYAL ∞ — L’Afrique enracinée, connectée au monde</title>
-  <meta name="description" content="DIGIY ROYAL — Tous les outils pour ton business en Afrique. 0% commission. Paiement direct au pro. Chauffeur, resto, location, boutique, artisan." />
+  <meta name="description" content="DIGIY ROYAL — Tous les outils pour ton business en Afrique. 0% commission. Paiement direct au pro." />
 
-  <link rel="stylesheet" href="./hub.css?v=enhanced1"/>
-  <link rel="manifest" href="./manifest.json">
-  <link rel="icon" href="./icon-192.png" sizes="192x192">
-  <link rel="apple-touch-icon" href="./icon-192.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="DIGIY ROYAL">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes">
+  
+  <link rel="icon" href="./icon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  
+  <link rel="manifest" href="./manifest.json">
 
+  <link rel="stylesheet" href="./hub.css?v=enhanced1"/>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <script defer src="./hub.js?v=enhanced1"></script>
-</head>
 
+  <script>
+    document.addEventListener('touchmove', function (e) {
+      if (window.navigator.standalone) {
+        // Empêche le rebond Safari quand on est en mode "App"
+        // e.preventDefault(); 
+      }
+    }, { passive: false });
+  </script>
+</head>
+  
 <body>
   <div class="bg"></div>
 
