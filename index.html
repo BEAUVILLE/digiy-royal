@@ -22,51 +22,55 @@
   <link rel="stylesheet" href="./hub.css?v=enhanced1"/>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <style>
-    /* 🔒 STABILITÉ MOBILE TOTALE */
-    * {
-      -webkit-tap-highlight-color: transparent;
-      -webkit-touch-callout: none;
-    }
-    
-    html {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      overscroll-behavior: none;
-    }
-    
-    body {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      overscroll-behavior: none;
-      -webkit-overflow-scrolling: touch;
-    }
-    
-    .app {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%;
-      overflow-x: hidden;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior-y: contain;
-    }
+ <style>
+  /* 🔒 STABILITÉ MOBILE TOTALE */
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+  
+  html {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+  
+  body {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+    /* 🔥 OVERRIDE total du background body */
+    background: linear-gradient(180deg, #061b14, #03110d) !important;
+  }
+  
+  .app {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+  }
 
-    /* 🔥 FIX VOILE - Cache complètement le bg */
-    .bg {
-      display: none !important;
-    }
-  </style>
+  /* 🔥 KILL TOTAL du voile */
+  .bg {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+</style>
 
   <script defer src="./hub.js?v=enhanced1"></script>
 
