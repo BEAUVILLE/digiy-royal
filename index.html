@@ -61,6 +61,11 @@
       -webkit-overflow-scrolling: touch;
       overscroll-behavior-y: contain;
     }
+
+    /* 🔥 FIX VOILE - Cache complètement le bg */
+    .bg {
+      display: none !important;
+    }
   </style>
 
   <script defer src="./hub.js?v=enhanced1"></script>
@@ -102,7 +107,7 @@
 </head>
   
 <body>
-  <div class="bg"></div>
+  <!-- <div class="bg"></div> ← OPTIONNEL: tu peux aussi carrément supprimer cette ligne -->
 
   <div class="app">
     <header class="top">
