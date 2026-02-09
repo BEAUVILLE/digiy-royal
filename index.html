@@ -1,13 +1,11 @@
-Digiy royal
-
 <!doctype html>
 <html lang="fr">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no"/>
   <meta name="theme-color" content="#061b14"/>
 
-  <title>DIGIY ROYAL ∞ — L’Afrique enracinée, connectée au monde</title>
+  <title>DIGIY ROYAL ∞ — L'Afrique enracinée, connectée au monde</title>
   <meta name="description" content="DIGIY ROYAL — Tous les outils pour ton business en Afrique. 0% commission. Paiement direct au pro." />
 
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -24,15 +22,82 @@ Digiy royal
   <link rel="stylesheet" href="./hub.css?v=enhanced1"/>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+  <style>
+    /* 🔒 STABILITÉ MOBILE TOTALE */
+    * {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+    }
+    
+    html {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+    
+    body {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .app {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: contain;
+    }
+  </style>
+
   <script defer src="./hub.js?v=enhanced1"></script>
 
   <script>
-    document.addEventListener('touchmove', function (e) {
-      if (window.navigator.standalone) {
-        // Empêche le rebond Safari quand on est en mode "App"
-        // e.preventDefault(); 
-      }
-    }, { passive: false });
+    // 🔒 Bloque tout mouvement parasite
+    document.addEventListener('DOMContentLoaded', function() {
+      // Bloque le rebond Safari
+      let startY = 0;
+      document.body.addEventListener('touchstart', function(e) {
+        startY = e.touches[0].pageY;
+      }, { passive: true });
+
+      document.body.addEventListener('touchmove', function(e) {
+        const y = e.touches[0].pageY;
+        const scrollableElement = e.target.closest('.app, .hubOverlay, .modal, .ndimbal');
+        
+        if (!scrollableElement) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      // Bloque le zoom double-tap
+      let lastTap = 0;
+      document.addEventListener('touchend', function(e) {
+        const now = Date.now();
+        if (now - lastTap < 300) {
+          e.preventDefault();
+        }
+        lastTap = now;
+      }, { passive: false });
+
+      // Bloque le zoom pinch
+      document.addEventListener('gesturestart', function(e) {
+        e.preventDefault();
+      }, { passive: false });
+    });
   </script>
 </head>
   
@@ -45,7 +110,7 @@ Digiy royal
         <div class="logo">∞</div>
         <div class="brandText">
           <div class="title">DIGIY ROYAL</div>
-          <div class="subtitle">L’Afrique enracinée, connectée au monde</div>
+          <div class="subtitle">L'Afrique enracinée, connectée au monde</div>
         </div>
       </a>
 
@@ -54,7 +119,7 @@ Digiy royal
           <div class="eyebrow">DIGIY ROYAL</div>
 
           <h1>
-            L’Afrique enracinée, connectée au monde.<br>
+            L'Afrique enracinée, connectée au monde.<br>
             <span class="gold">Tout ton business dans ta main</span><span class="dot">●</span>
           </h1>
 
