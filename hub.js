@@ -823,6 +823,18 @@ function boot() {
     console.error("❌ digiy-help-btn NOT FOUND!");
   }
 
+  // 📖 MANIFESTE - ouvrir dans nouvel onglet
+  const manifestoBtn = document.getElementById('manifesto-bubble-btn');
+  if (manifestoBtn) {
+    manifestoBtn.addEventListener('click', () => {
+      console.log("📖 MANIFESTE CLICKED!");
+      window.open('https://digiylyfe.net/la-revolution-digitale-africaine-sans-commission/', '_blank');
+    });
+    console.log("✅ Manifeste listener attached");
+  } else {
+    console.log("⚠️ manifesto-bubble-btn NOT FOUND (normal si pas encore ajouté au HTML)");
+  }
+
   // NDIMBAL - fermer
   $("#digiyCloseBtn")?.addEventListener("click", () => {
     const ndimbal = $("#digiy-ndimbal");
