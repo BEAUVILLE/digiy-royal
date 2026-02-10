@@ -321,10 +321,18 @@ const SUPABASE_ANON_KEY =
 
         const btnCopy = card.querySelectorAll('button')[0];
         const btnWa = card.querySelectorAll('button')[1];
-
+const btnSent = card.querySelectorAll('button')[2];
         btnCopy.onclick = () => copyText(msg);
         btnWa.onclick = () => openWhatsApp(phone.value, msg);
-
+btnSent.onclick = async () => {
+  const { error } = await sb.rpc('swarm_mark_whatsapp_sent', { p_task_id: r.task_id });
+  if(error){
+    showToast("Erreur: " + error.message);
+    return;
+  }
+  showToast("Marqué envoyé ✅");
+  load();
+};
         grid.appendChild(card);
       }
     }
