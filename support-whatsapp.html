@@ -30,9 +30,7 @@
       background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
       box-shadow:var(--shadow);
     }
-    .brand{
-      display:flex; gap:12px; align-items:center;
-    }
+    .brand{ display:flex; gap:12px; align-items:center; }
     .logo{
       width:46px; height:46px; border-radius:16px;
       display:grid; place-items:center; font-weight:900;
@@ -49,14 +47,14 @@
     }
     .dot{width:8px; height:8px; border-radius:99px; background:var(--red)}
     .dot.ok{background:var(--green)}
+
     .controls{
       width:100%;
       display:grid; gap:10px;
       grid-template-columns: 1.2fr 0.7fr 0.7fr 0.7fr;
     }
-    @media (max-width:900px){
-      .controls{grid-template-columns:1fr 1fr}
-    }
+    @media (max-width:900px){ .controls{grid-template-columns:1fr 1fr} }
+
     .field{
       background:rgba(11,18,34,.72);
       border:1px solid rgba(255,255,255,.12);
@@ -69,6 +67,7 @@
       color:var(--ink); font-size:13px;
     }
     .field label{font-size:12px; color:var(--soft)}
+
     .btn{
       cursor:pointer; user-select:none;
       padding:10px 12px; border-radius:14px;
@@ -80,14 +79,16 @@
     }
     .btn.ghost{
       background:rgba(255,255,255,.05);
-      font-weight:700;
+      font-weight:800;
     }
+
     .grid{
       margin-top:14px;
       display:grid; gap:12px;
       grid-template-columns:repeat(2, minmax(0,1fr));
     }
     @media (max-width:900px){ .grid{grid-template-columns:1fr} }
+
     .card{
       border:1px solid rgba(255,255,255,.10);
       background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
@@ -96,6 +97,7 @@
     .row{display:flex; gap:10px; justify-content:space-between; align-items:flex-start}
     .k{font-size:12px; color:var(--muted)}
     .v{font-size:13px; font-weight:800}
+
     .msg{
       margin-top:10px;
       padding:10px; border-radius:16px;
@@ -104,6 +106,7 @@
       color:var(--muted);
       font-size:13px; white-space:pre-wrap;
     }
+
     .actions{
       margin-top:10px;
       display:flex; gap:10px; flex-wrap:wrap;
@@ -121,6 +124,9 @@
     }
     .btn2.gold{background:linear-gradient(180deg, rgba(250,204,21,.22), rgba(250,204,21,.10))}
     .btn2.green{background:linear-gradient(180deg, rgba(34,197,94,.20), rgba(34,197,94,.08))}
+    .btn2.gray{background:linear-gradient(180deg, rgba(148,163,184,.16), rgba(148,163,184,.06))}
+    .btn2.red{background:linear-gradient(180deg, rgba(251,113,133,.20), rgba(251,113,133,.08))}
+
     .toast{
       position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
       background:rgba(2,6,23,.85);
@@ -131,9 +137,16 @@
       box-shadow:var(--shadow);
       max-width:92vw;
       font-size:13px;
+      z-index:9999;
     }
     .toast.show{display:flex}
     .small{font-size:12px; color:var(--soft); margin-top:6px}
+
+    .hint{
+      font-size:12px;
+      color:var(--soft);
+      margin-top:4px;
+    }
   </style>
 </head>
 
@@ -145,8 +158,10 @@
         <div>
           <h1>DIGIY — Support WhatsApp (0 API)</h1>
           <div class="sub">On lit les replies générées par SWARM, puis on envoie à la main via WhatsApp.</div>
+          <div class="hint">Onglets: À traiter / Envoyés • + normalisation du numéro (221) • bouton “Envoyé ✅”.</div>
         </div>
       </div>
+
       <div class="pill" id="statusPill">
         <span class="dot" id="dot"></span>
         <span id="statusTxt">Déconnecté</span>
@@ -181,6 +196,10 @@
         <button class="btn ghost" id="autoBtn">⏱ Auto: OFF</button>
         <button class="btn ghost" id="clearBtn">✕ Reset filtres</button>
 
+        <!-- ✅ ONGLET VIEWS -->
+        <button class="btn ghost" id="tabReady">📥 À traiter</button>
+        <button class="btn ghost" id="tabSent">✅ Envoyés</button>
+
         <div class="field" style="grid-column:1/-1">
           <div style="min-width:110px">
             <label>WhatsApp</label>
@@ -195,6 +214,7 @@
 
     <div class="small">
       Astuce : si tu n’as pas le numéro client, tu copies le texte et tu le colles dans ton WhatsApp direct.
+      Si le client t’écrit “77 123 45 67”, colle ça dans le champ : on le normalise automatiquement en “221771234567”.
     </div>
   </div>
 
@@ -204,15 +224,16 @@
     // ============================
     // ✅ CONFIG SUPABASE (ANON)
     // ============================
-     const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
-const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
+    const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+    const SUPABASE_ANON_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
 
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       auth: { persistSession: true }
     });
 
-    const VIEW = "v_support_whatsapp_ready";
+    // ✅ view dynamique (ready / sent)
+    let VIEW = "v_support_whatsapp_ready";
 
     // UI refs
     const grid = document.getElementById('grid');
@@ -220,9 +241,14 @@ const SUPABASE_ANON_KEY =
     const businessSel = document.getElementById('business');
     const citySel = document.getElementById('city');
     const phone = document.getElementById('phone');
+
     const refreshBtn = document.getElementById('refreshBtn');
     const autoBtn = document.getElementById('autoBtn');
     const clearBtn = document.getElementById('clearBtn');
+
+    const tabReady = document.getElementById('tabReady');
+    const tabSent = document.getElementById('tabSent');
+
     const statusTxt = document.getElementById('statusTxt');
     const dot = document.getElementById('dot');
 
@@ -268,8 +294,28 @@ const SUPABASE_ANON_KEY =
       showToast("Copié ✅");
     }
 
+    // ✅ normalisation simple Sénégal: si 9 chiffres (77xxxxxxx) => préfixe 221
+    function normalizePhone(raw){
+      let p = String(raw || '').replace(/[^\d]/g,'').trim();
+      if(!p) return '';
+      // enlever 00, +, etc déjà filtrés, mais on couvre "00221"
+      if(p.startsWith('00')) p = p.slice(2);
+      // si déjà en 221...
+      if(p.startsWith('221') && p.length === 12) return p;
+      // si 9 chiffres (77xxxxxxx / 78 / 76 / 70 / 75 / etc)
+      if(p.length === 9) return '221' + p;
+      // si 12 chiffres mais pas 221 (on garde)
+      return p;
+    }
+
+    // live normalize on input (sans casser la saisie)
+    phone.addEventListener('blur', () => {
+      const n = normalizePhone(phone.value);
+      if(n) phone.value = n;
+    });
+
     function openWhatsApp(phoneDigits, message){
-      const p = String(phoneDigits || '').replace(/[^\d]/g,'').trim();
+      const p = normalizePhone(phoneDigits);
       const text = encodeURIComponent(message);
       const url = p
         ? `https://wa.me/${p}?text=${text}`
@@ -278,11 +324,16 @@ const SUPABASE_ANON_KEY =
     }
 
     function buildMsg(row){
-      // Priorité : FR + WO si dispo
       const fr = row.reply_fr || '';
       const wo = row.reply_wo || '';
       if(fr && wo) return `${fr}\n\n${wo}`;
       return row.reply_short || fr || wo || '';
+    }
+
+    function fmtDate(row){
+      const d = row.sent_at || row.finished_at || null;
+      if(!d) return '';
+      try { return new Date(d).toLocaleString(); } catch { return ''; }
     }
 
     function render(rows){
@@ -294,11 +345,27 @@ const SUPABASE_ANON_KEY =
         return;
       }
 
+      const isSentTab = (VIEW === "v_support_whatsapp_sent");
+
       for(const r of rows){
         const card = document.createElement('div');
         card.className = 'card';
 
         const msg = buildMsg(r);
+
+        // actions selon onglet
+        const actionsHtml = isSentTab
+          ? `
+            <button class="btn2 gold">📋 Copier</button>
+            <button class="btn2 green">🟢 WhatsApp</button>
+            <button class="btn2 gray">📞 Copier numéro</button>
+          `
+          : `
+            <button class="btn2 gold">📋 Copier</button>
+            <button class="btn2 green">🟢 WhatsApp</button>
+            <button class="btn2 gray">📞 Copier numéro</button>
+            <button class="btn2" style="background:linear-gradient(180deg, rgba(250,204,21,.22), rgba(250,204,21,.10))">✅ Envoyé</button>
+          `;
 
         card.innerHTML = `
           <div class="row">
@@ -306,33 +373,47 @@ const SUPABASE_ANON_KEY =
               <div class="v">${r.business || '—'} ${r.city ? '— ' + r.city : ''}</div>
               <div class="k">task: ${r.task_id}</div>
             </div>
-            <div class="k">${r.finished_at ? new Date(r.finished_at).toLocaleString() : ''}</div>
+            <div class="k">${fmtDate(r)}</div>
           </div>
 
           <div class="msg"><b>Client:</b> ${r.customer_msg || '—'}</div>
-          <div class="msg"><b>Réponse prête:</b>\n${msg || '—'}</div>
+          <div class="msg"><b>${isSentTab ? 'Message envoyé:' : 'Réponse prête:'}</b>\n${msg || '—'}</div>
 
-          <div class="actions">
-  <button class="btn2 gold">📋 Copier</button>
-  <button class="btn2 green">🟢 WhatsApp</button>
-  <button class="btn2" style="background:linear-gradient(180deg, rgba(250,204,21,.22), rgba(250,204,21,.10))">✅ Envoyé</button>
-</div>
+          <div class="actions">${actionsHtml}</div>
         `;
 
-        const btnCopy = card.querySelectorAll('button')[0];
-        const btnWa = card.querySelectorAll('button')[1];
-const btnSent = card.querySelectorAll('button')[2];
+        const buttons = card.querySelectorAll('button');
+
+        const btnCopy = buttons[0];
+        const btnWa = buttons[1];
+        const btnCopyPhone = buttons[2];
+        const btnSent = (!isSentTab ? buttons[3] : null);
+
         btnCopy.onclick = () => copyText(msg);
         btnWa.onclick = () => openWhatsApp(phone.value, msg);
-btnSent.onclick = async () => {
-  const { error } = await sb.rpc('swarm_mark_whatsapp_sent', { p_task_id: r.task_id });
-  if(error){
-    showToast("Erreur: " + error.message);
-    return;
-  }
-  showToast("Marqué envoyé ✅");
-  load();
-};
+
+        btnCopyPhone.onclick = async () => {
+          const p = normalizePhone(phone.value);
+          if(!p){
+            showToast("Mets le numéro client d'abord");
+            return;
+          }
+          await copyText(p);
+          showToast("Numéro copié 📞");
+        };
+
+        if(btnSent){
+          btnSent.onclick = async () => {
+            const { error } = await sb.rpc('swarm_mark_whatsapp_sent', { p_task_id: r.task_id });
+            if(error){
+              showToast("Erreur: " + error.message);
+              return;
+            }
+            showToast("Marqué envoyé ✅");
+            load();
+          };
+        }
+
         grid.appendChild(card);
       }
     }
@@ -351,7 +432,8 @@ btnSent.onclick = async () => {
         rows = rows.filter(r => {
           const hay = [
             r.business, r.city, r.customer_msg,
-            r.reply_short, r.reply_fr, r.reply_wo
+            r.reply_short, r.reply_fr, r.reply_wo,
+            r.sent_via
           ].map(norm).join(' ');
           return hay.includes(qq);
         });
@@ -373,8 +455,9 @@ btnSent.onclick = async () => {
       }
 
       allRows = data || [];
-      setStatus(true, `OK — ${allRows.length} replies`);
-      // remplir filtres
+      const label = (VIEW === "v_support_whatsapp_sent") ? "envoyés" : "à traiter";
+      setStatus(true, `OK — ${allRows.length} ${label}`);
+
       const businesses = [...new Set(allRows.map(r=>r.business).filter(Boolean))].sort();
       const cities = [...new Set(allRows.map(r=>r.city).filter(Boolean))].sort();
       fillSelect(businessSel, businesses, "Tous");
@@ -393,6 +476,13 @@ btnSent.onclick = async () => {
       }
     }
 
+    function setTab(which){
+      VIEW = (which === 'sent') ? "v_support_whatsapp_sent" : "v_support_whatsapp_ready";
+      tabReady.classList.toggle('ghost', which !== 'ready');
+      tabSent.classList.toggle('ghost', which !== 'sent');
+      load();
+    }
+
     // events
     refreshBtn.onclick = load;
     autoBtn.onclick = () => setAuto(!auto);
@@ -407,8 +497,12 @@ btnSent.onclick = async () => {
     businessSel.onchange = applyFilters;
     citySel.onchange = applyFilters;
 
+    // onglets
+    tabReady.onclick = () => setTab('ready');
+    tabSent.onclick  = () => setTab('sent');
+
     // boot
-    load();
+    setTab('ready');
   </script>
 </body>
 </html>
