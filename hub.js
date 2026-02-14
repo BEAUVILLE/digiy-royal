@@ -316,6 +316,29 @@ function badgeHTML(kind, status, statusLabel) {
 function getModuleUrl(m) {
   let base = m.directUrl || LINKS[m.key] || "";
 
+  // ✅ PRO => toujours passer par le rond-point central
+  // (pro-espace gère ensuite pin + module)
+  if (m.kind === "pro") {
+    const u = new URL(PRO_DEFAULT_URL);
+    if (state.phone) u.searchParams.set("phone", state.phone);
+
+    // bonus : on pré-sélectionne le module dans pro-espace (optionnel)
+    // pro-espace peut lire ?module=driverPro etc plus tard
+    u.searchParams.set("module", m.key);
+
+    return u.toString();
+  }
+
+  // PUBLIC normal
+  if (!base) return "";
+
+  if (m.phoneParam && state.phone) {
+    base = withPhone(base, state.phone, "phone");
+  }
+  return base;
+}
+
+
   // fallback : si module PRO sans directUrl, on l’envoie vers le portail PRO
   if (m.kind === "pro" && !m.directUrl && !LINKS[m.key]) {
     base = PRO_DEFAULT_URL;
@@ -497,7 +520,12 @@ async function boot() {
   });
 
   // hero CTAs
-  $("#btnGetHub")?.addEventListener("click", () => hub.open(withPhone(PRO_DEFAULT_URL, state.phone, "phone")));
+  $("#btnGetHub")?.addEventListener("click", () => {
+  // HUB = rester sur ROYAL et scroller modules (clean mobile)
+  const modulesSection = document.querySelector(".section");
+  if (modulesSection) modulesSection.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
   $("#btnDeals")?.addEventListener("click", () => hub.open(LINKS.bonneAffaire));
 
   // tabs
