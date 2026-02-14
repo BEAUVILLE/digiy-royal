@@ -13,31 +13,35 @@
   <meta name="apple-mobile-web-app-title" content="DIGIY ROYAL">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-touch-fullscreen" content="yes">
-  
+
   <link rel="icon" href="./icon-192.png" sizes="192x192">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  
   <link rel="manifest" href="./manifest.json">
 
-  <link rel="stylesheet" href="./hub.css?v=enhanced1"/>
+  <link rel="stylesheet" href="./hub.css?v=enhanced2"/>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <script defer src="./hub.js?v=enhanced1"></script>
+  <!-- ✅ HUB -->
+  <script defer src="./hub.js?v=enhanced2"></script>
 
+  <!-- ✅ Fix iOS standalone bounce (safe) -->
   <script>
     document.addEventListener('touchmove', function (e) {
       if (window.navigator.standalone) {
-        // Empêche le rebond Safari quand on est en mode "App"
-        // e.preventDefault(); 
+        // e.preventDefault(); // laisse commenté si tu veux garder le scroll
       }
     }, { passive: false });
   </script>
 </head>
-  
+
 <body>
   <div class="bg"></div>
 
   <div class="app">
+
+    <!-- =========================
+         TOP / HERO
+    ========================== -->
     <header class="top">
       <a class="brand" href="#" id="homeBrand" aria-label="Retour haut de page">
         <div class="logo">∞</div>
@@ -119,229 +123,65 @@
         </div>
       </div>
     </header>
-    <!-- SECTION HERO MANIFESTE - VERSION FINALE ULTRA LISIBLE -->
-<!-- À PLACER JUSTE AVANT <section class="section"> -->
-<!-- Dans index.html, ligne ~127, APRÈS </header> et AVANT <main class="main"> -->
 
-<section class="manifestoHero">
-  <div class="manifestoContainer">
-    <div class="manifestoIcon">🦅</div>
-    
-    <h2 class="manifestoTitle">
-      L'AFRIQUE ENRACINÉE<br>CONNECTÉE AU MONDE
-    </h2>
-    
-    <div class="manifestoSubtitle">
-      26 modules professionnels • 0% de commission • 100% de vos revenus
-    </div>
-    
-    <p class="manifestoText">
-      Pendant que les plateformes prennent 25% de vos revenus, DIGIYLYFE vous propose un modèle révolutionnaire : <strong>gardez 100% de ce que vous gagnez.</strong>
-    </p>
-    
-    <div class="manifestoBtns">
-  <a href="https://digiylyfe.net/la-revolution-digitale-africaine-sans-commission/" target="_blank" rel="noopener" class="btn manifestoPrimary">
-    📖 LIRE LE MANIFESTE
-  </a>
+    <!-- =========================
+         MANIFESTO HERO (CLEAN)
+         ✅ Le CSS doit aller dans hub.css (pas inline)
+    ========================== -->
+    <section class="manifestoHero" aria-label="Manifeste DIGIY">
+      <div class="manifestoContainer">
+        <div class="manifestoIcon" aria-hidden="true">🦅</div>
 
-  <button class="btn manifestoOutline" id="btnScrollModules" type="button">
-    🌐 VOIR LES MODULES
-  </button>
+        <h2 class="manifestoTitle">
+          L'AFRIQUE ENRACINÉE<br>CONNECTÉE AU MONDE
+        </h2>
 
-  <a href="https://articles.digiylyfe.com" target="_blank" rel="noopener" class="btn manifestoOutline">
-    📰 LIRE LES ARTICLES
-  </a>
-</div>
-</section>
+        <div class="manifestoSubtitle">
+          26 modules professionnels • 0% de commission • 100% de vos revenus
+        </div>
 
-<!-- SCRIPT pour le bouton "Voir les modules" -->
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const scrollBtn = document.getElementById('btnScrollModules');
-    if (scrollBtn) {
-      scrollBtn.addEventListener('click', () => {
-        const modulesSection = document.querySelector('.section');
-        if (modulesSection) {
-          modulesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        <p class="manifestoText">
+          Pendant que les plateformes prennent 25% de vos revenus, DIGIYLYFE vous propose un modèle révolutionnaire :
+          <strong>gardez 100% de ce que vous gagnez.</strong>
+        </p>
+
+        <div class="manifestoBtns">
+          <a href="https://digiylyfe.net/la-revolution-digitale-africaine-sans-commission/"
+             target="_blank" rel="noopener" class="btn manifestoPrimary">
+            📖 LIRE LE MANIFESTE
+          </a>
+
+          <button class="btn manifestoOutline" id="btnScrollModules" type="button">
+            🌐 VOIR LES MODULES
+          </button>
+
+          <a href="https://articles.digiylyfe.com" target="_blank" rel="noopener" class="btn manifestoOutline">
+            📰 LIRE LES ARTICLES
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ✅ Script minimal : scroll modules -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const scrollBtn = document.getElementById('btnScrollModules');
+        if (!scrollBtn) return;
+        scrollBtn.addEventListener('click', () => {
+          const modulesSection = document.querySelector('.section');
+          if (modulesSection) modulesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
       });
-    }
-  });
-</script>
+    </script>
 
-<!-- CSS ADDITIONNEL - À AJOUTER À LA FIN DE hub.css -->
-<style>
-.manifestoHero {
-  max-width: 1200px;
-  margin: 20px auto 0;
-  padding: 0 18px;
-}
-
-.manifestoContainer {
-  background: linear-gradient(135deg, rgba(11,42,31,.95) 0%, rgba(10,36,27,.85) 100%);
-  border: 1px solid rgba(148,163,184,.28);
-  border-radius: 26px;
-  padding: 40px 30px;
-  box-shadow: 0 18px 60px rgba(0,0,0,.35);
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.manifestoContainer::before {
-  content: "";
-  position: absolute;
-  inset: -100px;
-  background: 
-    radial-gradient(600px 300px at 30% 20%, rgba(246,196,83,.12), transparent 60%),
-    radial-gradient(600px 300px at 70% 80%, rgba(22,163,74,.10), transparent 60%);
-  pointer-events: none;
-  opacity: 0.8;
-}
-
-.manifestoIcon {
-  font-size: 64px;
-  margin-bottom: 20px;
-  animation: manifestoFloat 3s ease-in-out infinite;
-  position: relative;
-  z-index: 1;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
-}
-
-@keyframes manifestoFloat {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-/* ========================================
-   COULEURS CORRIGÉES - ULTRA LISIBLES
-   ======================================== */
-
-/* TITRE - OR BRILLANT SUR FOND VERT */
-.manifestoTitle {
-  position: relative;
-  z-index: 1;
-  font-family: var(--fontA);
-  font-weight: 900;
-  font-size: 36px;
-  line-height: 1.15;
-  margin: 0 0 15px 0;
-  color: #FFD700;  /* OR PUR - Excellent contraste sur vert */
-  letter-spacing: 1px;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 20px rgba(255,215,0,0.3);
-}
-
-/* SOUS-TITRE - BLANC PUR */
-.manifestoSubtitle {
-  position: relative;
-  z-index: 1;
-  font-family: var(--fontA);
-  font-weight: 700;
-  font-size: 18px;  /* Augmenté pour meilleure lisibilité */
-  color: #FFFFFF;  /* BLANC PUR - Contraste maximum */
-  margin-bottom: 20px;
-  letter-spacing: 0.5px;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.6);  /* Ombre forte pour ressortir */
-}
-
-/* TEXTE PRINCIPAL - BLANC TRÈS CLAIR */
-.manifestoText {
-  position: relative;
-  z-index: 1;
-  font-size: 19px;  /* Augmenté pour meilleure lisibilité */
-  line-height: 1.7;
-  color: #F8FAFC;  /* BLANC TRÈS CLAIR - Excellent sur vert */
-  max-width: 700px;
-  margin: 0 auto 30px;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5);  /* Ombre pour détacher du fond */
-}
-
-/* STRONG DANS LE TEXTE - OR BRILLANT */
-.manifestoText strong {
-  color: #FFD700;  /* OR PUR - Attire l'oeil */
-  font-weight: 900;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.6), 0 0 15px rgba(255,215,0,0.2);
-}
-
-/* ======================================== */
-
-.manifestoBtns {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.manifestoPrimary {
-  border-color: rgba(246,196,83,.55);
-  background: linear-gradient(135deg, rgba(246,196,83,.30), rgba(22,163,74,.25));
-  font-size: 16px;
-  padding: 14px 30px;
-  color: #FFFFFF;  /* BLANC pour les boutons */
-  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
-}
-
-.manifestoPrimary:hover {
-  border-color: rgba(246,196,83,.75);
-  background: linear-gradient(135deg, rgba(246,196,83,.40), rgba(22,163,74,.35));
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-}
-
-.manifestoOutline {
-  background: transparent;
-  border-color: rgba(22,163,74,.55);
-  font-size: 16px;
-  padding: 14px 30px;
-  color: #FFFFFF;  /* BLANC pour les boutons */
-  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
-}
-
-.manifestoOutline:hover {
-  border-color: rgba(22,163,74,.75);
-  background: rgba(22,163,74,.15);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-}
-
-/* Responsive */
-@media (max-width: 560px) {
-  .manifestoContainer {
-    padding: 30px 20px;
-  }
-  
-  .manifestoIcon {
-    font-size: 48px;
-  }
-  
-  .manifestoTitle {
-    font-size: 26px;
-  }
-  
-  .manifestoSubtitle {
-    font-size: 15px;
-  }
-  
-  .manifestoText {
-    font-size: 17px;
-  }
-  
-  .manifestoBtns {
-    flex-direction: column;
-  }
-  
-  .manifestoPrimary,
-  .manifestoOutline {
-    width: 100%;
-  }
-}
-</style>
+    <!-- =========================
+         MAIN
+    ========================== -->
     <main class="main">
-      <section class="section">
+      <section class="section" aria-label="Modules DIGIY">
         <div class="sectionHead">
           <h2>Tous tes modules DIGIY</h2>
-          <div class="legend">
+          <div class="legend" aria-label="Légende">
             <span class="pill officiel">OFFICIEL</span>
             <span class="pill nouveau">NOUVEAU</span>
             <span class="pill live">LIVE</span>
@@ -350,6 +190,7 @@
           </div>
         </div>
 
+        <!-- ✅ hub.js remplit cette grille depuis modules.json -->
         <div id="modulesGrid" class="grid" aria-live="polite"></div>
       </section>
 
@@ -367,17 +208,24 @@
       </footer>
     </main>
 
-    <!-- Boutons flottants -->
+    <!-- =========================
+         FLOAT BUTTONS
+    ========================== -->
     <button id="tarif-bubble-btn" class="floatBtn" type="button">🏷️ Tarifs</button>
     <button id="espace-pro-btn" class="floatBtn" type="button">🧰 PRO</button>
     <button id="manifesto-bubble-btn" class="floatBtn" type="button">📖 Manifeste</button>
     <button id="digiy-help-btn" class="floatBtn" type="button">♾️ NDIMBAL</button>
 
-    <!-- NDIMBAL popup -->
+    <!-- =========================
+         NDIMBAL POPUP
+    ========================== -->
     <div id="digiy-ndimbal" class="ndimbal hidden" aria-hidden="true">
       <div class="ndimbalBox" role="dialog" aria-modal="true">
         <div class="ndimbalTitle">♾️ NDIMBAL</div>
-        <div class="ndimbalText"><b>Naka nga def frérot ?</b><br>Dis-moi ce que tu veux faire, je te pointe au bon endroit.</div>
+        <div class="ndimbalText">
+          <b>Naka nga def frérot ?</b><br>
+          Dis-moi ce que tu veux faire, je te pointe au bon endroit.
+        </div>
 
         <div class="ndimbalActions">
           <button class="btn primary" type="button" data-action="sell">📋 Publier une mission</button>
@@ -389,7 +237,9 @@
       </div>
     </div>
 
-    <!-- QR modal -->
+    <!-- =========================
+         QR MODAL
+    ========================== -->
     <div id="qrModal" class="qrModal hidden" aria-hidden="true">
       <div class="qrContent" role="dialog" aria-modal="true">
         <div class="qrHeader">
@@ -397,15 +247,20 @@
           <button id="qrClose" class="btn tiny" type="button">✖ Fermer</button>
         </div>
 
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=https://apps.digiylyfe.com/"
-     alt="QR DIGIYLYFE" class="qrImg">
+        <img
+          src="https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=https://apps.digiylyfe.com/"
+          alt="QR DIGIYLYFE"
+          class="qrImg"
+        >
 
         <div class="qrText">📱 Scanne pour ouvrir DIGIYLYFE</div>
         <a href="https://apps.digiylyfe.com/" target="_blank" rel="noopener" class="qrLink">Ouvrir DIGIY →</a>
       </div>
     </div>
 
-    <!-- HUB overlay (iframe) -->
+    <!-- =========================
+         HUB OVERLAY (IFRAME)
+    ========================== -->
     <div id="hubOverlay" class="hubOverlay hidden" aria-hidden="true">
       <div class="hubCard" role="dialog" aria-modal="true">
         <div class="hubTop">
@@ -419,7 +274,9 @@
       </div>
     </div>
 
-    <!-- Modal simple -->
+    <!-- =========================
+         SIMPLE MODAL
+    ========================== -->
     <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true">
       <div class="modalCard">
         <div class="modalTitle" id="modalTitle">Titre</div>
