@@ -1,223 +1,186 @@
-/* modules.js — DIGIY ROYAL HUB
-   - Centralise l'annuaire des modules (sans surcharger ROYAL)
-   - Recherche + filtres + badges
-   - Aucune dépendance
+/* PRO-ESPACE — HUB PRO (JSON)
+   - charge ./modules.json
+   - filtre + recherche
+   - ouvre les modules via pin.html (avec slug si présent)
 */
 
-export const DIGIY_MODULES = [
-  // ✅ PRO (pilotes)
-  {
-    id: "loc-pro",
-    name: "DIGIY LOC PRO",
-    slug: "loc-pro",
-    kind: "pro",
-    status: "live",          // live | beta | off
-    city: "Saly",
-    tags: ["logement", "reservation", "vitrine", "cockpit"],
-    url: "https://beauville.github.io/digiy-loc-pro/"
-  },
-  {
-    id: "driver-pro",
-    name: "DIGIY DRIVER PRO",
-    slug: "driver-pro",
-    kind: "pro",
-    status: "beta",
-    city: "Dakar",
-    tags: ["chauffeur", "trajet", "0% commission", "cockpit"],
-    url: "https://beauville.github.io/digiy-driver-pro/"
-  },
-  {
-    id: "build-pro",
-    name: "DIGIY BUILD PRO",
-    slug: "build-pro",
-    kind: "pro",
-    status: "beta",
-    city: "Dakar",
-    tags: ["artisan", "devis", "chantier", "cockpit"],
-    url: "https://beauville.github.io/digiy-build/"
-  },
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 
-  // 🌍 HUB / vitrine
-  {
-    id: "royal",
-    name: "DIGIY ROYAL",
-    slug: "royal",
-    kind: "hub",
-    status: "live",
-    city: "Global",
-    tags: ["hub", "0% commission", "vitrine"],
-    url: "https://beauville.github.io/digiy-royal/"
-  },
+const STORAGE_PHONE = "DIGIY_HUB_PHONE"; // si tu veux passer phone
+const STORAGE_SLUG  = "DIGIY_PRO_SLUG";  // optionnel si tu veux mémoriser slug côté pro-espace
 
-  // ➕ Ajoute tes autres modules ici (market, explore, pay, jobs…)
-];
+let MODULES = [];
+const MODULES_JSON_URL = "./modules.json";
 
-function el(tag, attrs = {}, children = []) {
-  const n = document.createElement(tag);
-  for (const [k, v] of Object.entries(attrs)) {
-    if (k === "class") n.className = v;
-    else if (k === "html") n.innerHTML = v;
-    else if (k.startsWith("on") && typeof v === "function") n.addEventListener(k.slice(2), v);
-    else n.setAttribute(k, v);
+const state = {
+  q: "",
+  status: "all" // all | live | nouveau | priorite | beta...
+};
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, m => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
+}
+
+function getPhone(){
+  try { return (localStorage.getItem(STORAGE_PHONE) || "").trim(); }
+  catch(_){ return ""; }
+}
+
+function getSlugFromUrl(){
+  try { return (new URL(location.href)).searchParams.get("slug") || ""; }
+  catch(_){ return ""; }
+}
+
+function getSlug(){
+  // priorité URL > localStorage
+  const u = getSlugFromUrl();
+  if (u) return u.trim();
+  try { return (localStorage.getItem(STORAGE_SLUG) || "").trim(); }
+  catch(_){ return ""; }
+}
+
+function withParam(url, k, v){
+  if (!url) return "";
+  if (!v) return url;
+  try{
+    const u = new URL(url);
+    u.searchParams.set(k, v);
+    return u.toString();
+  }catch(_){
+    const sep = url.includes("?") ? "&" : "?";
+    return url + sep + encodeURIComponent(k) + "=" + encodeURIComponent(v);
   }
-  for (const c of children) n.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
-  return n;
 }
 
-function norm(s) {
-  return (s || "").toString().toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
+async function loadModules(){
+  const r = await fetch(`${MODULES_JSON_URL}?v=${Date.now()}`, { cache:"no-store" });
+  if (!r.ok) throw new Error(`modules.json HTTP ${r.status}`);
+  const j = await r.json();
+  const arr = Array.isArray(j.modules) ? j.modules : [];
+  MODULES = arr.filter(Boolean).map(m => ({
+    key: String(m.key||"").trim(),
+    name: String(m.name||"").trim(),
+    icon: m.icon || "∞",
+    tag: String(m.tag||"").trim(),
+    desc: String(m.desc||"").trim(),
+    kind: "pro",
+    status: String(m.status||"").trim(),
+    statusLabel: String(m.statusLabel||"").trim(),
+    phoneParam: !!m.phoneParam,
+    directUrl: String(m.directUrl||"").trim()
+  })).filter(m => m.key && m.name && m.directUrl);
 }
 
-function badge(status) {
-  const map = {
-    live: { t: "LIVE", c: "digiy-badge digiy-live" },
-    beta: { t: "BETA", c: "digiy-badge digiy-beta" },
-    off:  { t: "OFF",  c: "digiy-badge digiy-off" },
-  };
-  const b = map[status] || { t: status?.toUpperCase() || "?", c: "digiy-badge" };
-  return el("span", { class: b.c }, [b.t]);
+function badgeHTML(status, label){
+  const cls = status || "soon";
+  const txt = label || (status ? status.toUpperCase() : "—");
+  return `<span class="badge ${escapeHtml(cls)}">${escapeHtml(txt)}</span>`;
 }
 
-function pill(text) {
-  return el("span", { class: "digiy-pill" }, [text]);
+function cardHTML(m){
+  return `
+  <div class="card" data-key="${escapeHtml(m.key)}" tabindex="0" role="button" aria-label="${escapeHtml(m.name)}">
+    <div class="cardTop">
+      <div class="icon">${escapeHtml(m.icon)}</div>
+      <div style="flex:1;min-width:0">
+        <div class="cardTitle">${escapeHtml(m.name)}</div>
+        <div class="cardTag">${escapeHtml(m.tag)}</div>
+        <div class="cardDesc">${escapeHtml(m.desc)}</div>
+        <div class="badges">${badgeHTML(m.status, m.statusLabel)}</div>
+      </div>
+    </div>
+    <div class="cardActions">
+      <button class="btn primary" data-action="open" type="button">Entrer →</button>
+      <button class="btn" data-action="copy" type="button">Copier lien</button>
+    </div>
+  </div>`;
 }
 
-function renderStyles(root) {
-  // styles minimes, tu peux les migrer dans ton CSS si tu veux
-  const css = `
-  .digiy-wrap{max-width:1100px;margin:0 auto;padding:16px}
-  .digiy-top{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
-  .digiy-input{flex:1;min-width:240px;padding:12px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.18);color:#fff;outline:none}
-  .digiy-select{padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.18);color:#fff;outline:none}
-  .digiy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-  .digiy-card{border-radius:16px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.22);padding:14px;box-shadow:0 18px 55px rgba(0,0,0,.35)}
-  .digiy-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-  .digiy-title{font-weight:800;letter-spacing:.2px}
-  .digiy-sub{opacity:.8;font-size:.92rem;margin-top:6px}
-  .digiy-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-  .digiy-pill{font-size:.78rem;padding:6px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.14);opacity:.9}
-  .digiy-badge{font-size:.72rem;padding:6px 9px;border-radius:999px;font-weight:900;border:1px solid rgba(255,255,255,.14)}
-  .digiy-live{background:rgba(34,197,94,.18)}
-  .digiy-beta{background:rgba(250,204,21,.18)}
-  .digiy-off{background:rgba(244,63,94,.14)}
-  .digiy-btn{margin-top:12px;width:100%;padding:12px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.08);color:#fff;font-weight:800;cursor:pointer}
-  .digiy-btn:hover{background:rgba(255,255,255,.12)}
-  .digiy-empty{opacity:.85;padding:14px;border-radius:14px;border:1px dashed rgba(255,255,255,.18)}
-  `;
-  const style = el("style", { html: css });
-  root.appendChild(style);
+function filtered(){
+  const q = (state.q||"").trim().toLowerCase();
+  return MODULES.filter(m => {
+    if (state.status !== "all" && m.status !== state.status) return false;
+    if (!q) return true;
+    const hay = [m.key,m.name,m.tag,m.desc,m.status,m.statusLabel].join(" ").toLowerCase();
+    return hay.includes(q);
+  });
 }
 
-export function mountModulesApp({
-  targetId = "modulesApp",
-  modules = DIGIY_MODULES,
-  defaultKind = "all" // all | pro | client | hub
-} = {}) {
-  const target = document.getElementById(targetId);
-  if (!target) throw new Error(`modules.js: container #${targetId} introuvable`);
+function openModule(m){
+  const phone = getPhone();
+  const slug  = getSlug();
 
-  target.innerHTML = "";
-  renderStyles(target);
+  // ✅ ouvrir direct le PIN du module
+  let url = m.directUrl;
 
-  const state = {
-    q: "",
-    kind: defaultKind,
-    status: "all",
-    city: "all",
-  };
+  // slug > phone (slug c’est l’identité du lieu/pro)
+  if (slug) url = withParam(url, "slug", slug);
+  else if (m.phoneParam && phone) url = withParam(url, "phone", phone);
 
-  const qInput = el("input", {
-    class: "digiy-input",
-    placeholder: "Recherche : logement, chauffeur, artisan, pay, market…",
-    oninput: (e) => { state.q = e.target.value; draw(); }
+  // mémorise slug si présent dans l’URL (pratique)
+  if (slug) {
+    try { localStorage.setItem(STORAGE_SLUG, slug); } catch(_){}
+  }
+
+  window.location.href = url;
+}
+
+function render(){
+  const grid = $("#modulesGrid");
+  if (!grid) return;
+
+  const list = filtered();
+  grid.innerHTML = list.length ? list.map(cardHTML).join("") : `<div class="empty">Aucun module PRO trouvé.</div>`;
+
+  $$(".card", grid).forEach(card => {
+    const key = card.getAttribute("data-key");
+    const m = MODULES.find(x => x.key === key);
+    if (!m) return;
+
+    card.addEventListener("click", (e) => {
+      const btn = e.target?.closest?.("button");
+      if (btn?.dataset?.action === "copy") {
+        e.preventDefault();
+        const slug = getSlug();
+        const phone = getPhone();
+        let link = m.directUrl;
+        if (slug) link = withParam(link, "slug", slug);
+        else if (m.phoneParam && phone) link = withParam(link, "phone", phone);
+        navigator.clipboard?.writeText(link).catch(()=>{});
+        alert("Copié ✅\n" + link);
+        return;
+      }
+      openModule(m);
+    });
+
+    card.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openModule(m);
+      }
+    });
+  });
+}
+
+async function boot(){
+  // search
+  $("#searchInput")?.addEventListener("input", (e) => { state.q = e.target.value; render(); });
+
+  // status filter (si tu as des boutons)
+  $$(".tab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      $$(".tab").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      state.status = btn.dataset.status || "all";
+      render();
+    });
   });
 
-  const kindSel = el("select", {
-    class: "digiy-select",
-    onchange: (e) => { state.kind = e.target.value; draw(); }
-  }, [
-    el("option", { value: "all" }, ["Tous"]),
-    el("option", { value: "pro" }, ["PRO"]),
-    el("option", { value: "client" }, ["CLIENT"]),
-    el("option", { value: "hub" }, ["HUB"]),
-  ]);
-  kindSel.value = defaultKind;
-
-  const statusSel = el("select", {
-    class: "digiy-select",
-    onchange: (e) => { state.status = e.target.value; draw(); }
-  }, [
-    el("option", { value: "all" }, ["Tous statuts"]),
-    el("option", { value: "live" }, ["LIVE"]),
-    el("option", { value: "beta" }, ["BETA"]),
-    el("option", { value: "off" }, ["OFF"]),
-  ]);
-
-  const cities = Array.from(new Set(modules.map(m => m.city).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
-  const citySel = el("select", {
-    class: "digiy-select",
-    onchange: (e) => { state.city = e.target.value; draw(); }
-  }, [
-    el("option", { value: "all" }, ["Toutes villes"]),
-    ...cities.map(c => el("option", { value: c }, [c]))
-  ]);
-
-  const top = el("div", { class: "digiy-wrap" }, [
-    el("div", { class: "digiy-top" }, [qInput, kindSel, statusSel, citySel]),
-  ]);
-
-  const grid = el("div", { class: "digiy-grid" });
-  top.appendChild(grid);
-  target.appendChild(top);
-
-  function matches(m) {
-    if (state.kind !== "all" && m.kind !== state.kind) return false;
-    if (state.status !== "all" && m.status !== state.status) return false;
-    if (state.city !== "all" && m.city !== state.city) return false;
-
-    const hay = norm([m.name, m.slug, m.city, m.status, m.kind, ...(m.tags||[])].join(" "));
-    const needle = norm(state.q);
-    if (needle && !hay.includes(needle)) return false;
-
-    return true;
-  }
-
-  function card(m) {
-    const head = el("div", { class: "digiy-head" }, [
-      el("div", {}, [
-        el("div", { class: "digiy-title" }, [m.name]),
-        el("div", { class: "digiy-sub" }, [`${m.kind.toUpperCase()} • ${m.city}`]),
-      ]),
-      badge(m.status)
-    ]);
-
-    const tagsRow = el("div", { class: "digiy-row" }, (m.tags || []).slice(0, 6).map(pill));
-
-    const btn = el("button", {
-      class: "digiy-btn",
-      onclick: () => window.open(m.url, "_blank", "noopener")
-    }, ["Ouvrir"]);
-
-    return el("div", { class: "digiy-card" }, [head, tagsRow, btn]);
-  }
-
-  function draw() {
-    grid.innerHTML = "";
-    const list = modules.filter(matches);
-
-    if (!list.length) {
-      grid.appendChild(el("div", { class: "digiy-empty" }, [
-        "Aucun module trouvé. Essaie un mot-clé (ex: “chauffeur”, “artisan”, “paiement”)."
-      ]));
-      return;
-    }
-
-    // Tri : live d’abord, puis beta, puis off
-    const rank = { live: 0, beta: 1, off: 2 };
-    list.sort((a,b) => (rank[a.status] ?? 9) - (rank[b.status] ?? 9) || a.name.localeCompare(b.name));
-
-    for (const m of list) grid.appendChild(card(m));
-  }
-
-  draw();
+  await loadModules();
+  render();
 }
+
+document.addEventListener("DOMContentLoaded", boot);
