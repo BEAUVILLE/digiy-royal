@@ -1,4 +1,8 @@
-/* DIGIY HUB F16 ENHANCED — Business-ready • Data-driven • 0% commission */
+/* DIGIY HUB F16 ENHANCED — Business-ready • Data-driven • 0% commission
+   ✅ NOUVEAU : MODULES JSON (moins lourd, plus lisible mobile)
+   - On charge ./modules.json
+   - Plus de gros tableau MODULES en dur dans hub.js
+*/
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -22,7 +26,7 @@ const LINKS = {
   admin:        "https://admin.digiylyfe.com/",
   tarifs:       "https://tarifs.digiylyfe.com/",
 
-  // ✅ NOUVEAU : "Vas chez DIGIY"
+  // ✅ "Vas chez DIGIY"
   vasChezDigiy: "https://vas-chez-digiy.digiylyfe.com/",
 
   // NDIMBAL
@@ -30,14 +34,14 @@ const LINKS = {
   ndimbalAnnonces:  "https://ndimbal-annonces.digiylyfe.com/",
   ndimbalLoc:       "https://ndimbal-loc.digiylyfe.com/",
 
-  // ✅ HubDrive = NDIMBAL annonces (comme tu as dit)
+  // ✅ HubDrive = NDIMBAL annonces
   hubDrive:     "https://ndimbal-annonces.digiylyfe.com/",
 
   // Public
   bonneAffaire: "https://bonne-affaire.digiylyfe.com/",
   driverClient: "https://driver-client.digiylyfe.com/",
   loc:          "https://loc.digiylyfe.com/",
-  resto:        "https://resto.digiylyfe.com/", // (chez toi sur VPS, ok)
+  resto:        "https://resto.digiylyfe.com/",
   build:        "https://build.digiylyfe.com/",
   explore:      "https://explore.digiylyfe.com/",
   market:       "https://market.digiylyfe.com/",
@@ -45,7 +49,7 @@ const LINKS = {
   pay:          "https://pay.digiylyfe.com/",
   resaTable:    "https://resa-table-resto.digiylyfe.com/",
 
-  // ✅ Notable reste sur GitHub (comme tu veux)
+  // GitHub
   notable:      "https://beauville.github.io/digiy-notable/",
 
   // PRO
@@ -61,10 +65,10 @@ const LINKS = {
   jobsPro:      "https://pro-job.digiylyfe.com/",
   restoPro:     "https://pro-resto.digiylyfe.com/",
   resaTablePro: "https://pro-resa-resto.digiylyfe.com/",
-  payPro:       "https://pay.digiylyfe.com/",      // si tu crées pro-pay, tu changes ici
-  explorePro:   "https://explore.digiylyfe.com/",  // si tu crées pro-explore, tu changes ici
+  payPro:       "https://pay.digiylyfe.com/",
+  explorePro:   "https://explore.digiylyfe.com/",
 
-  // FRET PIN direct (SOUS-DOMAINES)
+  // FRET PIN direct
   fretClientProPin:     "https://pro-fret-client.digiylyfe.com/pin.html",
   fretChauffeurProPin:  "https://pro-fret-chauffeur.digiylyfe.com/pin.html"
 };
@@ -72,325 +76,43 @@ const LINKS = {
 const PRO_DEFAULT_URL = LINKS.espacePro;
 
 /* =========================
-   MODULES DATA-DRIVEN
+   MODULES DATA-DRIVEN (JSON)
    ========================= */
-const MODULES = [
-  /* -------- PUBLIC -------- */
-  {
-    key: "vasChezDigiy",
-    name: "VAS CHEZ DIGIY",
-    icon: "🧭",
-    tag: "ACCÈS RAPIDE",
-    desc: "Entrée rapide vers l’écosystème DIGIY. Simple, direct, terrain.",
-    kind: "public",
-    status: "nouveau",
-    statusLabel: "NOUVEAU",
-    phoneParam: false
-  },
-  {
-    key: "bonneAffaire",
-    name: "DIGIY BONNE AFFAIRE",
-    icon: "💥",
-    tag: "BONS PLANS • PROMOS",
-    desc: "Les meilleures opportunités locales : promos, deals, bonnes affaires terrain.",
-    kind: "public",
-    status: "officiel",
-    statusLabel: "OFFICIEL",
-    phoneParam: false
-  },
-  {
-    key: "ndimbalMap",
-    name: "DIGIY NDIMBAL MAP",
-    icon: "🗺️",
-    tag: "CARTE COMMUNAUTÉ",
-    desc: "Annuaire géolocalisé du Sénégal : pros, quartiers, filtres terrain.",
-    kind: "public",
-    status: "gratuit",
-    statusLabel: "GRATUIT",
-    phoneParam: false
-  },
-  {
-    key: "driverClient",
-    name: "DIGIY DRIVER CLIENT",
-    icon: "🚕",
-    tag: "COMMANDER UNE COURSE",
-    desc: "Commande ta course VTC au Sénégal. Paiement direct. 0% commission.",
-    kind: "public",
-    status: "live",
-    statusLabel: "LIVE",
-    phoneParam: true
-  },
-  {
-    key: "loc",
-    name: "DIGIY LOC",
-    icon: "🏠",
-    tag: "LOCATION SANS OTA",
-    desc: "Alternative Booking/Airbnb, sans commission, en direct propriétaire.",
-    kind: "public",
-    status: "live",
-    statusLabel: "LIVE",
-    phoneParam: true
-  },
-  {
-    key: "resto",
-    name: "DIGIY RESTO",
-    icon: "🍽️",
-    tag: "VITRINE RESTAURANT",
-    desc: "Menus, photos, horaires, localisation. Réservation directe.",
-    kind: "public",
-    status: "live",
-    statusLabel: "LIVE",
-    phoneParam: true
-  },
-  {
-    key: "build",
-    name: "DIGIY BUILD",
-    icon: "🏗️",
-    tag: "ARTISANS & BTP",
-    desc: "Devis, galerie, contact. Humain. Direct. Sans commission.",
-    kind: "public",
-    status: "live",
-    statusLabel: "LIVE",
-    phoneParam: true
-  },
-  {
-    key: "explore",
-    name: "DIGIY EXPLORE",
-    icon: "🧭",
-    tag: "TOURISME & DÉCOUVERTE",
-    desc: "Découvrir l'Afrique : guides, visibilité, expériences authentiques.",
-    kind: "public",
-    status: "live",
-    statusLabel: "LIVE",
-    phoneParam: false
-  },
-  {
-    key: "market",
-    name: "DIGIY MARKET",
-    icon: "🛍️",
-    tag: "MARKETPLACE LOCALE",
-    desc: "Acheter/vendre local. Annonces propres. Sans commission.",
-    kind: "public",
-    status: "priorite",
-    statusLabel: "PRIORITÉ",
-    phoneParam: true
-  },
-  {
-    key: "jobs",
-    name: "DIGIY JOBS",
-    icon: "💼",
-    tag: "EMPLOI & TALENTS",
-    desc: "Offres, candidatures, profils. Pont talents–employeurs.",
-    kind: "public",
-    status: "priorite",
-    statusLabel: "PRIORITÉ",
-    phoneParam: true
-  },
-  {
-    key: "pay",
-    name: "DIGIY PAY",
-    icon: "💳",
-    tag: "WAVE / OM / CB",
-    desc: "Wallet unifié Wave/OM/CB. Historique, suivi, activation modules.",
-    kind: "public",
-    status: "priorite",
-    statusLabel: "PRIORITÉ",
-    phoneParam: true
-  },
-  {
-    key: "resaTable",
-    name: "DIGIY RESA TABLE",
-    icon: "🪑",
-    tag: "RÉSA RESTAURANT",
-    desc: "Réservations tables restaurant. Plan de salle, dispos temps réel.",
-    kind: "public",
-    status: "live",
-    statusLabel: "LIVE",
-    phoneParam: true
-  },
-  {
-    key: "notable",
-    name: "DIGIY NOTABLE",
-    icon: "📓",
-    tag: "NOTES & DOCS",
-    desc: "Notes terrain, procédures, fiches. Organise ton savoir pro.",
-    kind: "public",
-    status: "priorite",
-    statusLabel: "PRIORITÉ",
-    phoneParam: false
-  },
+let MODULES = [];
+const MODULES_JSON_URL = "./modules.json"; // à la racine du repo
 
-  /* -------- PRO -------- */
-  {
-    key: "inscriptionPro",
-    name: "INSCRIPTION PRO",
-    icon: "📝",
-    tag: "NOUVEAU COMPTE PRO",
-    desc: "Inscription intelligente. Choisis ton module, on calcule ton tarif.",
-    kind: "pro",
-    status: "nouveau",
-    statusLabel: "NOUVEAU",
-    phoneParam: true,
-    directUrl: LINKS.inscriptionPro
-  },
-  {
-    key: "espacePro",
-    name: "ESPACE PRO",
-    icon: "🧰",
-    tag: "PORTAIL PRO",
-    desc: "Ouvre tes modules (après paiement). Slug + PIN. Tour de contrôle.",
-    kind: "pro",
-    status: "live",
-    statusLabel: "LIVE",
-    phoneParam: true,
-    directUrl: LINKS.espacePro
-  },
-  {
-    key: "driverPro",
-    name: "DIGIY DRIVER PRO",
-    icon: "🚗",
-    tag: "CHAUFFEUR PRO",
-    desc: "Accepter courses, GPS temps réel, encaissements directs.",
-    kind: "pro",
-    status: "live",
-    statusLabel: "LIVE",
-    phoneParam: true,
-    directUrl: LINKS.driverPro
-  },
-  {
-    key: "locPro",
-    name: "DIGIY LOC PRO",
-    icon: "🏡",
-    tag: "PROPRIÉTAIRES",
-    desc: "Cockpit propriétaire, planning réservations, encaissements.",
-    kind: "pro",
-    status: "live",
-    statusLabel: "LIVE",
-    phoneParam: true,
-    directUrl: LINKS.locPro
-  },
-  {
-    key: "caissePro",
-    name: "DIGIY CAISSE PRO",
-    icon: "🧾",
-    tag: "POS • ENCAISSEMENT",
-    desc: "Caisse pro + sync ultra-légère. Encaissement terrain.",
-    kind: "pro",
-    status: "nouveau",
-    statusLabel: "NOUVEAU",
-    phoneParam: true,
-    directUrl: LINKS.caissePro
-  },
-  {
-    key: "buildPro",
-    name: "DIGIY BUILD PRO",
-    icon: "🧱",
-    tag: "ARTISANS • DEVIS",
-    desc: "Devis, chantiers, pipeline. Gestion complète BTP.",
-    kind: "pro",
-    status: "priorite",
-    statusLabel: "PRIORITÉ",
-    phoneParam: true,
-    directUrl: LINKS.buildPro
-  },
-  {
-    key: "marketPro",
-    name: "DIGIY MARKET PRO",
-    icon: "📦",
-    tag: "BOUTIQUE • CATALOGUE",
-    desc: "Gestion produits, commandes, stock. Boutique en ligne.",
-    kind: "pro",
-    status: "priorite",
-    statusLabel: "PRIORITÉ",
-    phoneParam: true,
-    directUrl: LINKS.marketPro
-  },
-  {
-    key: "jobsPro",
-    name: "DIGIY JOBS PRO",
-    icon: "🧑🏾‍💼",
-    tag: "EMPLOYEURS",
-    desc: "Gestion offres, dossiers candidats, suivi accompagnement.",
-    kind: "pro",
-    status: "priorite",
-    statusLabel: "PRIORITÉ",
-    phoneParam: true,
-    directUrl: LINKS.jobsPro
-  },
-  {
-    key: "restoPro",
-    name: "DIGIY RESTO PRO",
-    icon: "👨🏾‍🍳",
-    tag: "MENU • RÉSA • CAISSE",
-    desc: "Gestion resto côté PRO. Menus, réservations, encaissements.",
-    kind: "pro",
-    status: "priorite",
-    statusLabel: "PRIORITÉ",
-    phoneParam: true,
-    directUrl: LINKS.restoPro
-  },
-  {
-    key: "explorePro",
-    name: "DIGIY EXPLORE PRO",
-    icon: "🧭",
-    tag: "SPOTS • GUIDES",
-    desc: "Gestion spots touristiques et expériences côté PRO.",
-    kind: "pro",
-    status: "priorite",
-    statusLabel: "PRIORITÉ",
-    phoneParam: true,
-    directUrl: LINKS.explorePro
-  },
-  {
-    key: "payPro",
-    name: "DIGIY PAY PRO",
-    icon: "💸",
-    tag: "WAVE • OM • QR",
-    desc: "Encaissement + activation modules côté PRO.",
-    kind: "pro",
-    status: "priorite",
-    statusLabel: "PRIORITÉ",
-    phoneParam: true,
-    directUrl: LINKS.payPro
-  },
-  {
-    key: "resaTablePro",
-    name: "DIGIY RESA TABLE PRO",
-    icon: "🪑",
-    tag: "PLANNING TABLES • RESTO",
-    desc: "Gestion réservations tables restaurant côté PRO.",
-    kind: "pro",
-    status: "priorite",
-    statusLabel: "PRIORITÉ",
-    phoneParam: true,
-    directUrl: LINKS.resaTablePro
-  },
-  // FRET PIN direct
-  {
-    key: "fretClientProPin",
-    name: "FRET CLIENT PRO",
-    icon: "📦",
-    tag: "PIN DIRECT",
-    desc: "Portail FRET client — accès direct via PIN.",
-    kind: "pro",
-    status: "live",
-    statusLabel: "LIVE",
-    phoneParam: false,
-    directUrl: LINKS.fretClientProPin
-  },
-  {
-    key: "fretChauffeurProPin",
-    name: "FRET CHAUFFEUR PRO",
-    icon: "🚚",
-    tag: "PIN DIRECT",
-    desc: "Portail FRET chauffeur — accès direct via PIN.",
-    kind: "pro",
-    status: "live",
-    statusLabel: "LIVE",
-    phoneParam: false,
-    directUrl: LINKS.fretChauffeurProPin
+async function loadModulesJSON() {
+  try {
+    const url = `${MODULES_JSON_URL}?v=${Date.now()}`; // cache-bust
+    const r = await fetch(url, { cache: "no-store" });
+    if (!r.ok) throw new Error(`modules.json HTTP ${r.status}`);
+    const j = await r.json();
+
+    const arr = Array.isArray(j.modules) ? j.modules : [];
+    // Sanitization légère (éviter crash si JSON incomplet)
+    MODULES = arr
+      .filter(m => m && typeof m === "object")
+      .map(m => ({
+        key: String(m.key || "").trim(),
+        name: String(m.name || "").trim(),
+        icon: m.icon || "∞",
+        tag: String(m.tag || "").trim(),
+        desc: String(m.desc || "").trim(),
+        kind: (m.kind === "pro" ? "pro" : "public"),
+        status: String(m.status || "").trim(),          // live | nouveau | officiel | priorite | gratuit | beta...
+        statusLabel: String(m.statusLabel || "").trim(),// texte badge
+        phoneParam: !!m.phoneParam,
+        directUrl: m.directUrl ? String(m.directUrl).trim() : "" // optionnel
+      }))
+      .filter(m => m.key && m.name);
+
+    return true;
+  } catch (e) {
+    console.warn("[DIGIY HUB] loadModulesJSON failed:", e?.message || e);
+    MODULES = [];
+    return false;
   }
-];
+}
 
 /* =========================
    HELPERS
@@ -565,7 +287,7 @@ function getFilteredModules() {
     if (state.filter === "pro" && m.kind !== "pro") return false;
     if (!q) return true;
 
-    const hay = [m.key, m.name, m.tag, m.desc, m.kind, m.status].join(" ").toLowerCase();
+    const hay = [m.key, m.name, m.tag, m.desc, m.kind, m.status, m.statusLabel].join(" ").toLowerCase();
     return hay.includes(q);
   });
 }
@@ -587,14 +309,15 @@ function badgeHTML(kind, status, statusLabel) {
   const kindBadge = `<span class="badge kind-${kind}">${kind === "pro" ? "PRO" : "PUBLIC"}</span>`;
   const st = status || "soon";
   const label = statusLabel || st.toUpperCase();
-  const stBadge = `<span class="badge ${st}">${label}</span>`;
+  const stBadge = `<span class="badge ${st}">${escapeHtml(label)}</span>`;
   return kindBadge + stBadge;
 }
 
 function getModuleUrl(m) {
   let base = m.directUrl || LINKS[m.key] || "";
 
-  if (m.kind === "pro" && !m.directUrl) {
+  // fallback : si module PRO sans directUrl, on l’envoie vers le portail PRO
+  if (m.kind === "pro" && !m.directUrl && !LINKS[m.key]) {
     base = PRO_DEFAULT_URL;
   }
 
@@ -647,7 +370,10 @@ function renderGrid() {
   const filtered = getFilteredModules();
   grid.innerHTML = filtered.length
     ? filtered.map(cardHTML).join("")
-    : `<div class="empty">Aucun module ne correspond à ta recherche frérot.</div>`;
+    : `<div class="empty">
+         Aucun module ne correspond à ta recherche frérot.<br>
+         <small style="opacity:.75">Si c'est vide, vérifie <b>modules.json</b>.</small>
+       </div>`;
 
   $$(".card", grid).forEach(card => {
     card.addEventListener("click", (e) => {
@@ -737,7 +463,7 @@ function askPhone() {
 /* =========================
    INIT
    ========================= */
-function boot() {
+async function boot() {
   modulesGridEl = $("#modulesGrid");
   phoneTextEl   = $("#phoneText");
   searchInputEl = $("#searchInput");
@@ -752,6 +478,15 @@ function boot() {
   state.phone  = normPhone(localStorage.getItem(STORAGE_PHONE) || "");
   state.filter = localStorage.getItem(STORAGE_FILTER) || "all";
   state.q      = localStorage.getItem(STORAGE_SEARCH) || "";
+
+  // ✅ Charger modules.json avant le rendu
+  const ok = await loadModulesJSON();
+  if (!ok) {
+    modal.info({
+      title: "Modules indisponibles",
+      text: "Le fichier <b>modules.json</b> n'a pas pu être chargé. Vérifie qu'il est bien à la racine du repo ROYAL."
+    });
+  }
 
   // phone buttons
   $("#btnEditPhone")?.addEventListener("click", askPhone);
@@ -886,4 +621,4 @@ function boot() {
   render();
 }
 
-document.addEventListener("DOMContentLoaded", boot);
+document.addEventListener("DOMContentLoaded", () => { boot(); });
