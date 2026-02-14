@@ -1,7 +1,5 @@
 /* DIGIY HUB F16 ENHANCED — Business-ready • Data-driven • 0% commission
-   ✅ NOUVEAU : MODULES JSON (moins lourd, plus lisible mobile)
-   - On charge ./modules.json
-   - Plus de gros tableau MODULES en dur dans hub.js
+   ✅ MODULES définis en dur (plus besoin de modules.json)
 */
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -76,43 +74,41 @@ const LINKS = {
 const PRO_DEFAULT_URL = LINKS.espacePro;
 
 /* =========================
-   MODULES DATA-DRIVEN (JSON)
+   MODULES (définis en dur)
    ========================= */
-let MODULES = [];
-const MODULES_JSON_URL = "./modules.json"; // à la racine du repo
+const MODULES = [
+  // === PUBLIC ===
+  { key: "bonneAffaire", name: "Bonne Affaire", icon: "🎯", tag: "marketplace", desc: "Deals & offres", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: false },
+  { key: "driverClient", name: "DIGIY DRIVER", icon: "🚗", tag: "transport", desc: "Réserver ta course VTC", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: true },
+  { key: "loc", name: "DIGIY LOC", icon: "🏠", tag: "accommodation", desc: "Trouver un logement", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: true },
+  { key: "resto", name: "DIGIY RESTO", icon: "🍽️", tag: "restaurant", desc: "Commander à manger", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: true },
+  { key: "resaTable", name: "Résa Table", icon: "📅", tag: "reservation", desc: "Réserver une table", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: true },
+  { key: "build", name: "DIGIY BUILD", icon: "🏗️", tag: "services", desc: "Services de construction", kind: "public", status: "beta", statusLabel: "BETA", phoneParam: true },
+  { key: "explore", name: "Explore", icon: "🗺️", tag: "discovery", desc: "Découvrir la région", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: false },
+  { key: "market", name: "DIGIY MARKET", icon: "🛍️", tag: "marketplace", desc: "Acheter/vendre", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: true },
+  { key: "jobs", name: "DIGIY JOBS", icon: "💼", tag: "emploi", desc: "Offres d'emploi", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: true },
+  { key: "pay", name: "DIGIY PAY", icon: "💳", tag: "paiement", desc: "Portefeuille digital", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: true },
+  { key: "notable", name: "Notable", icon: "📝", tag: "documentation", desc: "Blog & ressources", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: false },
+  
+  // === NDIMBAL ===
+  { key: "ndimbalMap", name: "NDIMBAL Map", icon: "🗺️", tag: "ndimbal", desc: "Carte des annonces", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: true },
+  { key: "ndimbalAnnonces", name: "NDIMBAL Annonces", icon: "📢", tag: "ndimbal", desc: "Hub Drive - Vendre", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: true },
+  { key: "ndimbalLoc", name: "NDIMBAL Loc", icon: "🏡", tag: "ndimbal", desc: "Locations NDIMBAL", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: true },
 
-async function loadModulesJSON() {
-  try {
-    const url = `${MODULES_JSON_URL}?v=${Date.now()}`; // cache-bust
-    const r = await fetch(url, { cache: "no-store" });
-    if (!r.ok) throw new Error(`modules.json HTTP ${r.status}`);
-    const j = await r.json();
-
-    const arr = Array.isArray(j.modules) ? j.modules : [];
-    // Sanitization légère (éviter crash si JSON incomplet)
-    MODULES = arr
-      .filter(m => m && typeof m === "object")
-      .map(m => ({
-        key: String(m.key || "").trim(),
-        name: String(m.name || "").trim(),
-        icon: m.icon || "∞",
-        tag: String(m.tag || "").trim(),
-        desc: String(m.desc || "").trim(),
-        kind: (m.kind === "pro" ? "pro" : "public"),
-        status: String(m.status || "").trim(),          // live | nouveau | officiel | priorite | gratuit | beta...
-        statusLabel: String(m.statusLabel || "").trim(),// texte badge
-        phoneParam: !!m.phoneParam,
-        directUrl: m.directUrl ? String(m.directUrl).trim() : "" // optionnel
-      }))
-      .filter(m => m.key && m.name);
-
-    return true;
-  } catch (e) {
-    console.warn("[DIGIY HUB] loadModulesJSON failed:", e?.message || e);
-    MODULES = [];
-    return false;
-  }
-}
+  // === PRO ===
+  { key: "inscriptionPro", name: "Inscription PRO", icon: "✍️", tag: "auth", desc: "Créer compte professionnel", kind: "pro", status: "live", statusLabel: "LIVE", phoneParam: true },
+  { key: "espacePro", name: "Espace PRO", icon: "🏢", tag: "dashboard", desc: "Tableau de bord pro", kind: "pro", status: "live", statusLabel: "LIVE", phoneParam: true },
+  { key: "driverPro", name: "DIGIY DRIVER PRO", icon: "🚗", tag: "vtc", desc: "Gérer ta flotte VTC", kind: "pro", status: "live", statusLabel: "LIVE", phoneParam: true },
+  { key: "locPro", name: "DIGIY LOC PRO", icon: "🏠", tag: "properties", desc: "Gérer tes logements", kind: "pro", status: "live", statusLabel: "LIVE", phoneParam: true },
+  { key: "restoPro", name: "DIGIY RESTO PRO", icon: "👨‍🍳", tag: "restaurant", desc: "Gérer ton resto", kind: "pro", status: "live", statusLabel: "LIVE", phoneParam: true },
+  { key: "caissePro", name: "Caisse PRO", icon: "💰", tag: "pos", desc: "Point de vente", kind: "pro", status: "live", statusLabel: "LIVE", phoneParam: true },
+  { key: "buildPro", name: "DIGIY BUILD PRO", icon: "🏗️", tag: "construction", desc: "Gérer chantiers", kind: "pro", status: "beta", statusLabel: "BETA", phoneParam: true },
+  { key: "marketPro", name: "DIGIY MARKET PRO", icon: "🛍️", tag: "marketplace", desc: "Vendre sur market", kind: "pro", status: "live", statusLabel: "LIVE", phoneParam: true },
+  { key: "jobsPro", name: "DIGIY JOBS PRO", icon: "💼", tag: "recruitement", desc: "Recruter", kind: "pro", status: "live", statusLabel: "LIVE", phoneParam: true },
+  { key: "payPro", name: "DIGIY PAY PRO", icon: "💳", tag: "paiement", desc: "Gérer paiements", kind: "pro", status: "live", statusLabel: "LIVE", phoneParam: true },
+  { key: "explorePro", name: "Explore PRO", icon: "🗺️", tag: "analytics", desc: "Analytics & stats", kind: "pro", status: "live", statusLabel: "LIVE", phoneParam: false },
+  { key: "resaTablePro", name: "Résa Table PRO", icon: "📅", tag: "reservation", desc: "Gérer réservations", kind: "pro", status: "live", statusLabel: "LIVE", phoneParam: true }
+];
 
 /* =========================
    HELPERS
@@ -316,7 +312,7 @@ function badgeHTML(kind, status, statusLabel) {
 function getModuleUrl(m) {
   let base = m.directUrl || LINKS[m.key] || "";
 
-  // fallback : si module PRO sans directUrl, on l’envoie vers le portail PRO
+  // fallback : si module PRO sans directUrl, on l'envoie vers le portail PRO
   if (m.kind === "pro" && !m.directUrl && !LINKS[m.key]) {
     base = PRO_DEFAULT_URL;
   }
@@ -372,7 +368,7 @@ function renderGrid() {
     ? filtered.map(cardHTML).join("")
     : `<div class="empty">
          Aucun module ne correspond à ta recherche frérot.<br>
-         <small style="opacity:.75">Si c'est vide, vérifie <b>modules.json</b>.</small>
+         <small style="opacity:.75">Pierre par pierre on construit l'empire! 🔥</small>
        </div>`;
 
   $$(".card", grid).forEach(card => {
@@ -463,7 +459,7 @@ function askPhone() {
 /* =========================
    INIT
    ========================= */
-async function boot() {
+function boot() {
   modulesGridEl = $("#modulesGrid");
   phoneTextEl   = $("#phoneText");
   searchInputEl = $("#searchInput");
@@ -478,15 +474,6 @@ async function boot() {
   state.phone  = normPhone(localStorage.getItem(STORAGE_PHONE) || "");
   state.filter = localStorage.getItem(STORAGE_FILTER) || "all";
   state.q      = localStorage.getItem(STORAGE_SEARCH) || "";
-
-  // ✅ Charger modules.json avant le rendu
-  const ok = await loadModulesJSON();
-  if (!ok) {
-    modal.info({
-      title: "Modules indisponibles",
-      text: "Le fichier <b>modules.json</b> n'a pas pu être chargé. Vérifie qu'il est bien à la racine du repo ROYAL."
-    });
-  }
 
   // phone buttons
   $("#btnEditPhone")?.addEventListener("click", askPhone);
