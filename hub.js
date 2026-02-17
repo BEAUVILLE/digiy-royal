@@ -92,7 +92,8 @@ const MODULES = [
   { key: "market", name: "DIGIY MARKET", icon: "🛍️", tag: "marketplace", desc: "Acheter/vendre", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: true, createdAt: "2025-10-01", featured: true },
   { key: "jobs", name: "DIGIY JOBS", icon: "💼", tag: "emploi", desc: "Offres d'emploi", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: true, createdAt: "2025-11-01", featured: false },
   { key: "pay", name: "DIGIY PAY", icon: "💳", tag: "paiement", desc: "Portefeuille digital", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: true, createdAt: "2025-09-15", featured: true },
-  { key: "audio", name: "DIGIY AUDIO", icon: "🎵", tag: "content", desc: "Écoute articles et contenus", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: false, createdAt: "2026-02-17", featured: true },   { key: "notable", name: "Notable", icon: "📝", tag: "documentation", desc: "Blog & ressources", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: false, createdAt: "2025-08-01", featured: false },
+  { key: "audio", name: "DIGIY AUDIO", icon: "🎵", tag: "content", desc: "Écoute articles et contenus", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: false, createdAt: "2026-02-17", featured: true },   
+   { key: "notable", name: "Notable", icon: "📝", tag: "documentation", desc: "Blog & ressources", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: false, createdAt: "2025-08-01", featured: false },
   
   // === NDIMBAL ===
   { key: "ndimbalMap", name: "NDIMBAL Map", icon: "🗺️", tag: "ndimbal", desc: "Carte des annonces", kind: "public", status: "live", statusLabel: "LIVE", phoneParam: true, createdAt: "2025-12-15", featured: true },
